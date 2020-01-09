@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(game LANGUAGES CXX C)
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../build)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_executable(game src/game.cxx
                     include/game.hxx

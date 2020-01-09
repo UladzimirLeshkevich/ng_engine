@@ -71,6 +71,7 @@ bool engine::events()
             {
                 case SDLK_w:
                     std::cout << " W is released " << '\n';
+                    logger << 102 << " W is released " << INFO;
                     break;
                 case SDLK_s:
                     std::cout << " S is released " << '\n';
@@ -99,10 +100,11 @@ bool engine::events()
 }
 
 //================== конструктор ===============================
-engine::engine()
-{
-    initialize();
-}
+// engine::engine()
+//    : logger(LogManager::get_logger("engine_system"))
+//{
+//    initialize();
+//}
 
 //================== деструктор ===============================
 engine::~engine()

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(logger LANGUAGES CXX C)
 
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../build)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_library(${PROJECT_NAME} SHARED include/log.h 
                                    include/decorator.h

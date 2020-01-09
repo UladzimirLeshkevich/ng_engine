@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(engine LANGUAGES CXX C)
 
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../build)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_library(${PROJECT_NAME} SHARED include/engine.hxx
                                    src/engine.cxx
@@ -28,6 +28,7 @@ find_library(SDL2_LIB NAMES libSDL2)
                -lSDL2main
                -lSDL2
                ${SDL2_LIB}
+               logger
                #${SDL2_MIXER}
                #${SDL2_IMAGE}
                #-mwindows
