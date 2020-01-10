@@ -16,18 +16,24 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 
 find_library(SDL2_LIB NAMES libSDL2)
+find_library(SDL_LIB NAMES libSDL)
 
     if(NOT SDL2_LIB)
         message(FATAL_ERROR "Error: find_library(...) did not find libSDL2")
     endif()
     
-    
+    if(NOT SDL_LIB)
+        message(FATAL_ERROR "Error: find_library(...) did not find libSDL")
+    endif()
+
+
     target_link_libraries(${PROJECT_NAME}
 
                -lmingw32
                -lSDL2main
                -lSDL2
                ${SDL2_LIB}
+               ${SDL_LIB}
                logger
                #${SDL2_MIXER}
                #${SDL2_IMAGE}
@@ -47,6 +53,8 @@ find_library(SDL2_LIB NAMES libSDL2)
                #-lversion
                #-luuid
                #-static-libgcc
-               #-lopengl32
+               -lopengl32
+               -lglew32
+               -lglu32
                )
 
