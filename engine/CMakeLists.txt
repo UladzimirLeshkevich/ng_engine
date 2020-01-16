@@ -9,28 +9,34 @@ add_library(${PROJECT_NAME} SHARED include/engine.hxx
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-
-
 target_include_directories(${PROJECT_NAME} PUBLIC
                           ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-
 find_library(SDL2_LIB NAMES libSDL2)
+find_library(SDL2_MIXER NAMES SDL2_mixer.dll)
+find_library(SDL2_IMAGE NAMES SDL2_image.dll)
 
-    if(NOT SDL2_LIB)
-        message(FATAL_ERROR "Error: find_library(...) did not find libSDL2")
-    endif()
-    
-    
+if(NOT SDL2_LIB)
+    message(FATAL_ERROR "Error: find_library(...) did not find libSDL2")
+endif()
+
+if(NOT SDL2_MIXER)
+    message(FATAL_ERROR "Error: find_library(...) did not find SDL2_mixer.dll")
+endif()
+
+if(NOT SDL2_IMAGE)
+    message(FATAL_ERROR "Error: find_library(...) did not find SDL2_image.dll")
+endif()
+      
     target_link_libraries(${PROJECT_NAME}
 
                -lmingw32
                -lSDL2main
-               -lSDL2
+               -lSDL2          
                ${SDL2_LIB}
+               ${SDL2_MIXER}
+               ${SDL2_IMAGE}
                logger
-               #${SDL2_MIXER}
-               #${SDL2_IMAGE}
                #-mwindows
                #-Wl,--no-undefined
                #-lm
@@ -47,6 +53,6 @@ find_library(SDL2_LIB NAMES libSDL2)
                #-lversion
                #-luuid
                #-static-libgcc
-               #-lopengl32
+               -lopengl32
                )
 

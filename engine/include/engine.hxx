@@ -15,6 +15,7 @@ public:
     ~engine();
 
 private:
-    std::shared_ptr<Log> logger{LogManager::get_logger("engine_sys")};
+    const static std::string system_name;
+    std::shared_ptr<Log> logger;
     SDL_Event test_event;
 };

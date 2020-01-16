@@ -1,6 +1,8 @@
 #include "engine.hxx"
 
-//================== метод инициализации SDL2 ==========================
+const std::string engine::system_name{"engine_sys"};
+
+//====================================================================================
 bool engine::initialize()
 {
     if ((SDL_Init(SDL_INIT_EVERYTHING)) != 0)
@@ -25,7 +27,7 @@ bool engine::initialize()
     return true;
 }
 
-//================== метод обработки событий ===========================
+//====================================================================================
 bool engine::events()
 {
     while (SDL_PollEvent(&test_event))
@@ -74,7 +76,7 @@ bool engine::events()
                 break;
             case SDLK_s:
                 std::cout << " S is released " << '\n';
-                logger << 104 << "S is released" << 105 << INFO;
+                logger << 104 << "S is released" << INFO;
                 break;
             case SDLK_a:
                 std::cout << " A is released " << '\n';
@@ -99,13 +101,13 @@ bool engine::events()
     return true;
 }
 
-//================== конструктор ===============================
-engine::engine() //: logger(LogManager::get_logger("engine_sys"))
+//====================================================================================
+engine::engine() : logger(LogManager::get_logger(system_name))
 {
     initialize();
 }
 
-//================== деструктор ===============================
+//====================================================================================
 engine::~engine()
 {
     SDL_Quit();
