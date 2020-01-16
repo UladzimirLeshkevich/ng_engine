@@ -35,33 +35,32 @@ bool engine::events()
         {
             switch (test_event.key.keysym.sym)
             {
-                case SDLK_w:
-                    std::cout << " W is pressed " << '\n';
-                    break;
-                case SDLK_s:
-                    std::cout << " S is pressed " << '\n';
-                    break;
-                case SDLK_a:
-                    std::cout << " A is pressed " << '\n';
-                    break;
-                case SDLK_d:
-                    std::cout << " D is pressed " << '\n';
-                    break;
-                case SDLK_LCTRL:
-                    std::cout << " BUTTON_ONE is pressed " << '\n';
-                    break;
-                case SDLK_SPACE:
-                    std::cout << " BUTTON_TWO is pressed " << '\n';
-                    break;
-                case SDLK_RETURN:
-                    std::cout << " START is pressed " << '\n';
-                    break;
-                case SDLK_ESCAPE:
-                    std::cout << " ESCAPE is pressed " << '\n';
-                    return false;
-                    break;
-                default:
-                    break;
+            case SDLK_w:
+                std::cout << " W is pressed " << '\n';
+                break;
+            case SDLK_s:
+                std::cout << " S is pressed " << '\n';
+                break;
+            case SDLK_a:
+                std::cout << " A is pressed " << '\n';
+                break;
+            case SDLK_d:
+                std::cout << " D is pressed " << '\n';
+                break;
+            case SDLK_LCTRL:
+                std::cout << " BUTTON_ONE is pressed " << '\n';
+                break;
+            case SDLK_SPACE:
+                std::cout << " BUTTON_TWO is pressed " << '\n';
+                break;
+            case SDLK_RETURN:
+                std::cout << " START is pressed " << '\n';
+                break;
+            case SDLK_ESCAPE:
+                std::cout << " ESCAPE is pressed " << '\n';
+                return false;
+            default:
+                break;
             }
         }
 
@@ -69,30 +68,31 @@ bool engine::events()
         {
             switch (test_event.key.keysym.sym)
             {
-                case SDLK_w:
-                    std::cout << " W is released " << '\n';
-                    logger << 102 << " W is released " << INFO;
-                    break;
-                case SDLK_s:
-                    std::cout << " S is released " << '\n';
-                    break;
-                case SDLK_a:
-                    std::cout << " A is released " << '\n';
-                    break;
-                case SDLK_d:
-                    std::cout << " D is released " << '\n';
-                    break;
-                case SDLK_LCTRL:
-                    std::cout << " BUTTON_ONE is released " << '\n';
-                    break;
-                case SDLK_SPACE:
-                    std::cout << " BUTTON_TWO is released " << '\n';
-                    break;
-                case SDLK_RETURN:
-                    std::cout << " START is released " << '\n';
-                    break;
-                default:
-                    break;
+            case SDLK_w:
+                std::cout << " W is released " << '\n';
+                logger << 102 << "W is released" << INFO;
+                break;
+            case SDLK_s:
+                std::cout << " S is released " << '\n';
+                logger << 104 << "S is released" << 105 << INFO;
+                break;
+            case SDLK_a:
+                std::cout << " A is released " << '\n';
+                break;
+            case SDLK_d:
+                std::cout << " D is released " << '\n';
+                break;
+            case SDLK_LCTRL:
+                std::cout << " BUTTON_ONE is released " << '\n';
+                break;
+            case SDLK_SPACE:
+                std::cout << " BUTTON_TWO is released " << '\n';
+                break;
+            case SDLK_RETURN:
+                std::cout << " START is released " << '\n';
+                break;
+            default:
+                break;
             }
         }
     }
@@ -100,11 +100,10 @@ bool engine::events()
 }
 
 //================== конструктор ===============================
-// engine::engine()
-//    : logger(LogManager::get_logger("engine_system"))
-//{
-//    initialize();
-//}
+engine::engine() //: logger(LogManager::get_logger("engine_sys"))
+{
+    initialize();
+}
 
 //================== деструктор ===============================
 engine::~engine()

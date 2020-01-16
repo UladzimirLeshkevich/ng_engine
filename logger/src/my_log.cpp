@@ -2,26 +2,26 @@
 #define L_WIDTH 12
 
 //==================================================================
-Log &My_Log::operator<<(std::string msg)
+Log& My_Log::operator<<(std::string msg)
 {
-    stream_buffer << msg;
+    stream_buffer << " " << msg;
     return *this;
 }
 
-Log &My_Log::operator<<(std::shared_ptr<Log> splog)
+Log& My_Log::operator<<(std::shared_ptr<Log> splog)
 {
     return *splog;
 }
 
 //==================================================================
-Log &My_Log::operator<<(int num)
+Log& My_Log::operator<<(int num)
 {
     stream_buffer << " " << num;
     return *this;
 }
 
 //==================================================================
-Log &My_Log::operator<<(typelog level)
+Log& My_Log::operator<<(typelog level)
 {
     // add time to log
     logfile << "\n" + current_time() + " | ";
@@ -44,7 +44,7 @@ Log &My_Log::operator<<(typelog level)
 My_Log::My_Log() {}
 
 //==================================================================
-void My_Log::open_logfile(const std::string &filepath)
+void My_Log::open_logfile(const std::string& filepath)
 {
     logfile.open(filepath);
     logfile << "Log started by My_Log at " << current_time() + "\n";
