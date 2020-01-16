@@ -4,9 +4,9 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    const std::string sA = "main_system";
+    const std::string sA = "main_sys";
 
-    std::shared_ptr<Log> logger{ LogManager::get_logger(sA) };
+    std::shared_ptr<Log> logger{LogManager::get_logger(sA)};
     logger->open_logfile("log.txt");
     logger << 100 << " jasjdfad " << INFO;
     std::cout << "!!!!!!!!!!!!!!!!!!!" << std::endl;

@@ -27,77 +27,140 @@ bool engine::initialize()
     return true;
 }
 
-//====================================================================================
+//==========================================================================
 bool engine::events()
 {
-    while (SDL_PollEvent(&test_event))
+
+    SDL_PollEvent(&test_event);
+
+    if (test_event.type == SDL_QUIT)
     {
-
-        if (test_event.type == SDL_KEYDOWN)
+        logger << "window was closed by SDL_QUIT" << INFO;
+        return false;
+    }
+    if (test_event.type == SDL_KEYDOWN)
+    {
+        switch (test_event.key.keysym.sym)
         {
-            switch (test_event.key.keysym.sym)
-            {
-            case SDLK_w:
-                std::cout << " W is pressed " << '\n';
-                break;
-            case SDLK_s:
-                std::cout << " S is pressed " << '\n';
-                break;
-            case SDLK_a:
-                std::cout << " A is pressed " << '\n';
-                break;
-            case SDLK_d:
-                std::cout << " D is pressed " << '\n';
-                break;
-            case SDLK_LCTRL:
-                std::cout << " BUTTON_ONE is pressed " << '\n';
-                break;
-            case SDLK_SPACE:
-                std::cout << " BUTTON_TWO is pressed " << '\n';
-                break;
-            case SDLK_RETURN:
-                std::cout << " START is pressed " << '\n';
-                break;
-            case SDLK_ESCAPE:
-                std::cout << " ESCAPE is pressed " << '\n';
-                return false;
-            default:
-                break;
-            }
-        }
-
-        if (test_event.type == SDL_KEYUP)
-        {
-            switch (test_event.key.keysym.sym)
-            {
-            case SDLK_w:
-                std::cout << " W is released " << '\n';
-                logger << 102 << "W is released" << INFO;
-                break;
-            case SDLK_s:
-                std::cout << " S is released " << '\n';
-                logger << 104 << "S is released" << INFO;
-                break;
-            case SDLK_a:
-                std::cout << " A is released " << '\n';
-                break;
-            case SDLK_d:
-                std::cout << " D is released " << '\n';
-                break;
-            case SDLK_LCTRL:
-                std::cout << " BUTTON_ONE is released " << '\n';
-                break;
-            case SDLK_SPACE:
-                std::cout << " BUTTON_TWO is released " << '\n';
-                break;
-            case SDLK_RETURN:
-                std::cout << " START is released " << '\n';
-                break;
-            default:
-                break;
-            }
+        case (SDLK_w):
+            key_W_flag = false;
+            //speed_to_up = speed_to_up_value;
+            speed_to_up = 0.0f;
+            break;
+        case SDLK_s:
+            key_S_flag = false;
+            speed_to_down = 0.0f;
+            //speed_to_down = -speed_to_down_value;
+            break;
+        case SDLK_a:
+            key_A_flag = false;
+            speed_to_left = 0.0f;
+            //speed_to_left = -speed_to_left_value;
+            break;
+        case SDLK_d:
+            key_D_flag = false;
+            //speed_to_right = speed_to_right_value;
+            speed_to_right = 0.0f;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = false;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = false;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = false;
+            break;
+        case SDLK_ESCAPE:
+            key_Esc_flag = false;
+            return false;
+        case (SDLK_q):
+            key_Q_flag = false;
+            break;
+        case (SDLK_e):
+            key_E_flag = false;
+            break;
+        default:
+            break;
         }
     }
+    if (test_event.type == SDL_KEYUP)
+    {
+        switch (test_event.key.keysym.sym)
+        {
+        case SDLK_w:
+            key_W_flag = true;
+            speed_to_up = speed_to_up_value;
+            logger << "key W was pressed" << INFO;
+            //speed_to_up = 0.0f;
+            break;
+        case SDLK_s:
+            key_S_flag = true;
+            speed_to_down = -speed_to_down_value;
+            logger << "key S was pressed" << INFO;
+            //speed_to_down = 0.0f;
+            break;
+        case SDLK_a:
+            key_A_flag = true;
+            speed_to_left = -speed_to_left_value;
+            logger << "key A was pressed" << INFO;
+            //speed_to_left = 0.0f;
+            break;
+        case SDLK_d:
+            key_D_flag = true;
+            speed_to_right = speed_to_right_value;
+            logger << "key D was pressed" << INFO;
+            //speed_to_right = 0.0f;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = true;
+            logger << "key LCTRL was pressed" << INFO;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = true;
+            logger << "key SPACE was pressed" << INFO;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = true;
+            logger << "key ENTER was pressed" << INFO;
+            break;
+        case (SDLK_q):
+            key_Q_flag = true;
+            logger << "key Q was pressed" << INFO;
+            break;
+        case (SDLK_e):
+            key_E_flag = true;
+            logger << "key E was pressed" << INFO;
+            break;
+        default:
+            break;
+        }
+    }
+    //===== mouse ====
+    if (test_event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (test_event.button.button == SDL_BUTTON_LEFT)
+        {
+            int w = 0;
+            int h = 0;
+            SDL_GetWindowSize(window, &w, &h);
+
+            key_MOUSE_flag = true;
+            // pr_mouse_x_pos = mouse_x_pos;
+            // pr_mouse_y_pos = mouse_y_pos;
+            mouse_y_pos = test_event.button.y;
+            mouse_x_pos = test_event.button.x;
+            mouse_click = true;
+        }
+    }
+    if (test_event.type == SDL_MOUSEBUTTONUP)
+    {
+        if (test_event.button.button == SDL_BUTTON_LEFT)
+        {
+            mouse_click = false;
+        }
+    }
+
     return true;
 }
 
