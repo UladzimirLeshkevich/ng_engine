@@ -10,13 +10,14 @@ int main(int /*argc*/, char* /*argv*/[])
     logger->open_logfile("log.txt");
     logger << 100 << " jasjdfad " << INFO;
     std::cout << "!!!!!!!!!!!!!!!!!!!" << std::endl;
-    engine obj;
+
+    engine ge(WINDOW_MODE, 800, 100);
 
     bool loop = true;
 
     while (loop)
     {
-        loop = obj.events();
+        loop = ge.events();
     }
 
     logger->close_log();

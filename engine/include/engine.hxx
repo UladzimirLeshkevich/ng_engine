@@ -11,12 +11,21 @@
 #include <string>
 #include <vector>
 
+const GLenum VERTEX_SHADER = GL_VERTEX_SHADER;
+const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
+const std::string INVERT_TEXTURE = "Invert texture";
+const std::string FULL_SCREEN = "Full screen";
+const std::string WINDOW_MODE = "Window mode";
+
 class engine
 {
 public:
     engine();
+    engine(const std::string& screen_mode_type, const int& in_width, const int& in_height);
 
     bool initialize();
+
+    bool initialize(const std::string& screen_mode_type, const int& in_width, const int& in_height);
 
     bool events();
 
@@ -30,6 +39,8 @@ private:
     SDL_Window* window = nullptr;
 
     //=== screen aspect ratio ===
+    int width;
+    int height;
     float k_screen = 1.0f; //= height / width;
 
     //==== mooving speed X Y ====
@@ -58,7 +69,6 @@ private:
     bool key_Esc_flag = false;
     bool key_Q_flag = false;
     bool key_E_flag = false;
-
 
     //=== openGL ===
     GLuint program = 0;
