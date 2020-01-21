@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 
+#define LOGFILELINE __FILE__ << ":" << __LINE__
+#define LOGFUNCLINE __FUNCTION__ << ":" << __LINE__
+
 const GLenum VERTEX_SHADER = GL_VERTEX_SHADER;
 const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
 const std::string INVERT_TEXTURE = "Invert texture";
@@ -21,17 +24,16 @@ class engine
 {
 public:
     engine();
-    engine(const std::string& screen_mode_type, const int& in_width, const int& in_height);
-
-    bool initialize();
-
-    bool initialize(const std::string& screen_mode_type, const int& in_width, const int& in_height);
+    engine(const std::string& in_screen_mode_type, const int& in_width, const int& in_height);
 
     bool events();
 
     ~engine();
 
 private:
+    bool initialize();
+    bool initialize(const std::string& screen_mode_type, const int& in_width, const int& in_height);
+
     const static std::string system_name;
     std::shared_ptr<Log> logger;
     SDL_Event test_event;
@@ -42,6 +44,7 @@ private:
     int width;
     int height;
     float k_screen = 1.0f; //= height / width;
+    std::string screen_mode_type;
 
     //==== mooving speed X Y ====
     float speed_to_right = 0.0f;

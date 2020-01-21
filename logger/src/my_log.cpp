@@ -72,7 +72,7 @@ std::string My_Log::get_label(typelog type)
     case WARNING:
         label = "WARNING";
         break;
-    case ERROR:
+    case SYSTEM_ERROR:
         label = "ERROR";
         break;
     case CRITICAL:
