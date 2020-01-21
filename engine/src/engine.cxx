@@ -1,6 +1,31 @@
 #include "engine.hxx"
 
+//==========================================================================
 const std::string engine::system_name{"engine_sys"};
+
+//==========================================================================
+PFNGLCREATESHADERPROC glCreateShader = nullptr;
+PFNGLSHADERSOURCEPROC glShaderSource = nullptr;
+PFNGLCOMPILESHADERPROC glCompileShader = nullptr;
+PFNGLGETSHADERIVPROC glGetShaderiv = nullptr;
+PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = nullptr;
+PFNGLDELETESHADERPROC glDeleteShader = nullptr;
+PFNGLCREATEPROGRAMPROC glCreateProgram = nullptr;
+PFNGLATTACHSHADERPROC glAttachShader = nullptr;
+PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation = nullptr;
+PFNGLLINKPROGRAMPROC glLinkProgram = nullptr;
+PFNGLGETPROGRAMIVPROC glGetProgramiv = nullptr;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = nullptr;
+PFNGLDELETEPROGRAMPROC glDeleteProgram = nullptr;
+PFNGLUSEPROGRAMPROC glUseProgram = nullptr;
+PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = nullptr;
+PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = nullptr;
+PFNGLVALIDATEPROGRAMPROC glValidateProgram = nullptr;
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = nullptr;
+PFNGLUNIFORM1IPROC glUniform1i = nullptr;
+PFNGLACTIVETEXTUREPROC glActiveTexture_ = nullptr;
+PFNGLUNIFORM4FVPROC glUniform4fv = nullptr;
+PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = nullptr;
 
 //====================================================================================
 engine::engine() : logger(LogManager::get_logger(system_name))
@@ -157,6 +182,23 @@ bool engine::events()
     return true;
 }
 
+//==========================================================================
+void engine::render_triangle(const triangle& t)
+{
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &t.v[0]);
+    glEnableVertexAttribArray(0);
+    glValidateProgram(program);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+//==========================================================================
+void engine::swap_buffers()
+{
+    SDL_GL_SwapWindow(window);
+    glClearColor(0.95f, 0.95f, 1.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 //====================================================================================
 engine::~engine()
 {
@@ -227,30 +269,118 @@ bool engine::initialize(const std::string& screen_mode_type, const int& in_width
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_assert(gl_context != nullptr);
 
-    //    load_gl_func("glCreateShader", glCreateShader);
-    //    load_gl_func("glShaderSource", glShaderSource);
-    //    load_gl_func("glCompileShader", glCompileShader);
-    //    load_gl_func("glGetShaderiv", glGetShaderiv);
-    //    load_gl_func("glGetShaderInfoLog", glGetShaderInfoLog);
-    //    load_gl_func("glDeleteShader", glDeleteShader);
-    //    load_gl_func("glCreateProgram", glCreateProgram);
-    //    load_gl_func("glAttachShader", glAttachShader);
-    //    load_gl_func("glBindAttribLocation", glBindAttribLocation);
-    //    load_gl_func("glLinkProgram", glLinkProgram);
-    //    load_gl_func("glGetProgramiv", glGetProgramiv);
-    //    load_gl_func("glGetProgramInfoLog", glGetProgramInfoLog);
-    //    load_gl_func("glDeleteProgram", glDeleteProgram);
-    //    load_gl_func("glUseProgram", glUseProgram);
-    //    load_gl_func("glVertexAttribPointer", glVertexAttribPointer);
-    //    load_gl_func("glEnableVertexAttribArray", glEnableVertexAttribArray);
-    //    load_gl_func("glValidateProgram", glValidateProgram);
-    //    load_gl_func("glGetUniformLocation", glGetUniformLocation);
-    //    load_gl_func("glUniform1i", glUniform1i);
-    //    load_gl_func("glActiveTexture", glActiveTexture_);
-    //    load_gl_func("glUniform4fv", glUniform4fv);
-    //    load_gl_func("glDisableVertexAttribArray", glDisableVertexAttribArray);
+    load_gl_func("glCreateShader", glCreateShader);
+    load_gl_func("glShaderSource", glShaderSource);
+    load_gl_func("glCompileShader", glCompileShader);
+    load_gl_func("glGetShaderiv", glGetShaderiv);
+    load_gl_func("glGetShaderInfoLog", glGetShaderInfoLog);
+    load_gl_func("glDeleteShader", glDeleteShader);
+    load_gl_func("glCreateProgram", glCreateProgram);
+    load_gl_func("glAttachShader", glAttachShader);
+    load_gl_func("glBindAttribLocation", glBindAttribLocation);
+    load_gl_func("glLinkProgram", glLinkProgram);
+    load_gl_func("glGetProgramiv", glGetProgramiv);
+    load_gl_func("glGetProgramInfoLog", glGetProgramInfoLog);
+    load_gl_func("glDeleteProgram", glDeleteProgram);
+    load_gl_func("glUseProgram", glUseProgram);
+    load_gl_func("glVertexAttribPointer", glVertexAttribPointer);
+    load_gl_func("glEnableVertexAttribArray", glEnableVertexAttribArray);
+    load_gl_func("glValidateProgram", glValidateProgram);
+    load_gl_func("glGetUniformLocation", glGetUniformLocation);
+    load_gl_func("glUniform1i", glUniform1i);
+    load_gl_func("glActiveTexture", glActiveTexture_);
+    load_gl_func("glUniform4fv", glUniform4fv);
+    load_gl_func("glDisableVertexAttribArray", glDisableVertexAttribArray);
 
-    //    old_create_shader();
+    old_create_shader();
+
     logger << "Engine successful initialized with window " << in_width << "x" << in_height << " in " << screen_mode_type << INFO;
     return true;
+}
+
+//==========================================================================
+template <typename T>
+void engine::load_gl_func(const char* func_name, T& result)
+{
+    void* gl_pointer = SDL_GL_GetProcAddress(func_name);
+    result = reinterpret_cast<T>(gl_pointer);
+    if (nullptr == gl_pointer)
+    {
+        logger << "Can't load GL function" << func_name << SYSTEM_ERROR;
+        throw std::runtime_error(std::string("can't load GL function") +
+                                 func_name);
+    }
+    result = reinterpret_cast<T>(gl_pointer);
+}
+
+//==========================================================================
+void engine::old_create_shader()
+{
+    GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
+
+    std::string vertex_shader_src =
+        "attribute vec2 a_position;"
+        "attribute vec2 a_tex_coord;"
+        "varying vec2 v_tex_coord;"
+        "void         main()"
+        "{v_tex_coord = a_tex_coord;"
+        "gl_Position = vec4(a_position, 0.0, 1.0);}";
+
+    const char* source = vertex_shader_src.data();
+    glShaderSource(vert_shader, 1, &source, nullptr);
+
+    glCompileShader(vert_shader);
+
+    GLint compiled_status = 0;
+    glGetShaderiv(vert_shader, GL_COMPILE_STATUS, &compiled_status);
+
+    if (compiled_status == 0)
+    {
+        std::cerr << "vertex shader compilation faild !!"
+                  << "\n";
+        logger << "Vertex shader compilation faild" << SYSTEM_ERROR;
+        glDeleteShader(vert_shader);
+    }
+
+    // create fragment shader
+    GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    std::string fragment_shader_src =
+        "varying vec2 v_tex_coord;"
+        "uniform sampler2D s_texture;"
+        "void main()"
+        "{gl_FragColor = texture2D(s_texture, v_tex_coord);}";
+    source = fragment_shader_src.data();
+    glShaderSource(fragment_shader, 1, &source, nullptr);
+
+    glCompileShader(fragment_shader);
+
+    compiled_status = 0;
+    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &compiled_status);
+
+    if (compiled_status == 0)
+    {
+        std::cerr << "fragment shader compilation faild !!"
+                  << "\n";
+        logger << "Fragment shader compilation faild" << SYSTEM_ERROR;
+        glDeleteShader(fragment_shader);
+    }
+
+    program = glCreateProgram();
+
+    glAttachShader(program, vert_shader);
+    glAttachShader(program, fragment_shader);
+
+    glBindAttribLocation(program, 0, "a_position");
+    glLinkProgram(program);
+    glUseProgram(program);
+    location = glGetUniformLocation(program, "s_texture");
+    if (location < 0)
+    {
+        std::cerr << "uniform problem !!"
+                  << "\n";
+        logger << "Uniform problem" << SYSTEM_ERROR;
+    }
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

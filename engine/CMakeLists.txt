@@ -5,6 +5,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_library(${PROJECT_NAME} SHARED include/engine.hxx
                                    src/engine.cxx
+                                   ../common/geometry.hxx
                                    )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

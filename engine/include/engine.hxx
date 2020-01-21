@@ -6,6 +6,8 @@
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_opengl_glext.h>
 
+#include "../../common/geometry.hxx"
+
 #include <chrono>
 #include <cmath>
 #include <string>
@@ -27,6 +29,8 @@ public:
     engine(const std::string& in_screen_mode_type, const int& in_width, const int& in_height);
 
     bool events();
+    void render_triangle(const triangle& t);
+    void swap_buffers();
 
     ~engine();
 
@@ -75,6 +79,12 @@ private:
 
     //=== openGL ===
     GLuint program = 0;
+    int location{0};
+
+    template <typename T>
+    void load_gl_func(const char* func_name, T& result);
+
+    void old_create_shader();
 
     //=== mouse ===
     bool key_MOUSE_flag = false;
