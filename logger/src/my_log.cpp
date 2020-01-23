@@ -1,5 +1,8 @@
 #include "my_log.h"
-#define L_WIDTH 12
+#define WIDTH_SYSTEM 14
+#define WIDTH_TYPE 3
+
+bool My_Log::log_opened = false;
 
 //==================================================================
 Log& My_Log::operator<<(std::string msg)
@@ -8,6 +11,7 @@ Log& My_Log::operator<<(std::string msg)
     return *this;
 }
 
+//==================================================================
 Log& My_Log::operator<<(std::shared_ptr<Log> splog)
 {
     return *splog;
@@ -27,12 +31,12 @@ Log& My_Log::operator<<(typelog level)
     logfile << "\n" + current_time() + " | ";
     // add level to log
     std::string resized_lebel = get_label(level);
-    resized_lebel.resize(L_WIDTH);
+    resized_lebel.resize(WIDTH_TYPE);
     logfile << resized_lebel + " | ";
     // add system_name to log
     std::string resized_system_name;
     stream_buffer >> resized_system_name;
-    resized_system_name.resize(L_WIDTH);
+    resized_system_name.resize(WIDTH_SYSTEM);
     logfile << resized_system_name + " | ";
     // add message to log
     stream_buffer >> logfile.rdbuf();
@@ -46,16 +50,27 @@ My_Log::My_Log() {}
 //==================================================================
 void My_Log::open_logfile(const std::string& filepath)
 {
-    logfile.open(filepath);
-    logfile << "Log started by My_Log at " << current_time() + "\n";
+    if (!log_opened)
+    {
+        logfile.open(filepath);
+        logfile << "Log started by My_Log at " << current_time() + "\n";
+        log_opened = true;
+    }
 }
 
 //==================================================================
 void My_Log::close_log()
 {
-    logfile << "\n\nLog closed by My_Log at " << current_time();
-    logfile.close();
+    if (log_opened)
+    {
+        logfile << "\n\nLog closed by My_Log at " << current_time();
+        logfile.close();
+        log_opened = false;
+    }
 }
+
+//==================================================================
+My_Log::~My_Log() { close_log(); }
 
 //==================================================================
 std::string My_Log::get_label(typelog type)
@@ -64,19 +79,19 @@ std::string My_Log::get_label(typelog type)
     switch (type)
     {
     case DEBUG:
-        label = "DEBUG";
+        label = "<D";
         break;
     case INFO:
-        label = "INFO";
+        label = "<I";
         break;
     case WARNING:
-        label = "WARNING";
+        label = "<W";
         break;
     case SYSTEM_ERROR:
-        label = "ERROR";
+        label = "<E";
         break;
     case CRITICAL:
-        label = "CRITICAL";
+        label = "<C";
         break;
     }
     return label;
