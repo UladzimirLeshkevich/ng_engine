@@ -49,7 +49,7 @@ engine::engine(const std::string& in_screen_mode_type,
         logger << "Engine is not initialized. Application will be closed" << SYSTEM_ERROR;
         logger->close_log();
         SDL_Quit();
-        exit(1);
+        std::exit(1);
     }
 }
 
