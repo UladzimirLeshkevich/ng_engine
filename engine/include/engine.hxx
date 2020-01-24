@@ -95,27 +95,40 @@ private:
     //        r.v[3].x = r.v[3].x * k;
     //    }
 
-    triangle scale_to_screen(triangle t)
+    //    triangle scale_to_screen(triangle t)
+    //    {
+    //        t.v[0].x = t.v[0].x * k_screen;
+    //        t.v[1].x = t.v[1].x * k_screen;
+    //        t.v[2].x = t.v[2].x * k_screen;
+
+    //        logger << "scale_to_screen(triangle t) with k_screen=" << k_screen << DEBUG;
+
+    //        return t;
+    //    }
+
+    //    rectangle scale_to_screen(rectangle r)
+    //    {
+    //        r.v[0].x = r.v[0].x * k_screen;
+    //        r.v[1].x = r.v[1].x * k_screen;
+    //        r.v[2].x = r.v[2].x * k_screen;
+    //        r.v[3].x = r.v[3].x * k_screen;
+
+    //        logger << "scale_to_screen(rectangle r) with k_screen=" << k_screen << DEBUG;
+
+    //        return r;
+    //    }
+
+    template <typename T>
+    T scale_to_screen(T input)
     {
-        t.v[0].x = t.v[0].x * k_screen;
-        t.v[1].x = t.v[1].x * k_screen;
-        t.v[2].x = t.v[2].x * k_screen;
+        input.v[0].x = input.v[0].x * k_screen;
+        input.v[1].x = input.v[1].x * k_screen;
+        input.v[2].x = input.v[2].x * k_screen;
+        input.v[3].x = input.v[3].x * k_screen;
 
-        logger << "scale_to_screen(triangle t) with k_screen=" << k_screen << DEBUG;
+        logger << "scale_to_screen(T input) with k_screen=" << k_screen << DEBUG;
 
-        return t;
-    }
-
-    rectangle scale_to_screen(rectangle r)
-    {
-        r.v[0].x = r.v[0].x * k_screen;
-        r.v[1].x = r.v[1].x * k_screen;
-        r.v[2].x = r.v[2].x * k_screen;
-        r.v[3].x = r.v[3].x * k_screen;
-
-        logger << "scale_to_screen(rectangle r) with k_screen=" << k_screen << DEBUG;
-
-        return r;
+        return input;
     }
 
     const static std::string system_name;
