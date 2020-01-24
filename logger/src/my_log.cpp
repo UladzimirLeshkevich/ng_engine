@@ -25,6 +25,20 @@ Log& My_Log::operator<<(int num)
 }
 
 //==================================================================
+Log& My_Log::operator<<(float num)
+{
+    stream_buffer << " " << num;
+    return *this;
+}
+
+//==================================================================
+Log& My_Log::operator<<(double num)
+{
+    stream_buffer << " " << num;
+    return *this;
+}
+
+//==================================================================
 Log& My_Log::operator<<(typelog level)
 {
     // add time to log

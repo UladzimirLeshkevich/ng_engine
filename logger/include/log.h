@@ -31,11 +31,19 @@ public:
 
     virtual Log& operator<<(int num) = 0;
 
+    virtual Log& operator<<(float num) = 0;
+
+    virtual Log& operator<<(double num) = 0;
+
     virtual Log& operator<<(typelog level) = 0;
 
     friend Log& operator<<(std::shared_ptr<Log> logger, std::string /*str*/);
 
     friend Log& operator<<(std::shared_ptr<Log> logger, int /*value*/);
+
+    friend Log& operator<<(std::shared_ptr<Log> logger, float /*value*/);
+
+    friend Log& operator<<(std::shared_ptr<Log> logger, double /*value*/);
 
     friend Log& operator<<(std::shared_ptr<Log> logger, typelog /*type*/);
 };

@@ -11,6 +11,10 @@ public:
 
     virtual Log& operator<<(int num) override;
 
+    virtual Log& operator<<(float num) override;
+
+    virtual Log& operator<<(double num) override;
+
     virtual Log& operator<<(typelog level) override;
 
     My_Log();

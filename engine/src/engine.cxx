@@ -35,11 +35,12 @@ engine::engine() : logger(LogManager::get_logger(system_name))
 
 //====================================================================================
 engine::engine(const std::string& in_screen_mode_type,
-               const int& in_width,
-               const int& in_height) : logger(LogManager::get_logger(system_name)),
-                                       width(in_width),
-                                       height(in_height),
-                                       screen_mode_type(in_screen_mode_type)
+               const float& in_width,
+               const float& in_height) : logger(LogManager::get_logger(system_name)),
+                                         width(in_width),
+                                         height(in_height),
+                                         k_screen((in_height / in_width)),
+                                         screen_mode_type(in_screen_mode_type)
 {
     logger->open_logfile("log.txt");
 
@@ -56,7 +57,13 @@ engine::engine(const std::string& in_screen_mode_type,
 //==========================================================================
 void engine::render(const rectangle& r)
 {
-    render_rectangle(r);
+    render_rectangle(scale_to_screen(r));
+}
+
+//==========================================================================
+void engine::render(const triangle& t)
+{
+    render_triangle(scale_to_screen(t));
 }
 
 //==========================================================================
@@ -281,7 +288,7 @@ bool engine::initialize()
 }
 
 //====================================================================================
-bool engine::initialize(const std::string& screen_mode_type, const int& in_width, const int& in_height)
+bool engine::initialize(const std::string& screen_mode_type, const float& in_width, const float& in_height)
 {
     if (screen_mode_type != FULL_SCREEN && screen_mode_type != WINDOW_MODE)
     {

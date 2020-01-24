@@ -49,10 +49,10 @@ class engine
 {
 public:
     engine();
-    engine(const std::string& in_screen_mode_type, const int& in_width, const int& in_height);
+    engine(const std::string& in_screen_mode_type, const float& in_width, const float& in_height);
 
     bool events();
-    void render_triangle(const triangle& t);
+
     void swap_buffers();
 
     //=== keyboard ===
@@ -68,12 +68,55 @@ public:
     bool key_E_pressed();
 
     void render(const rectangle& r);
+    void render(const triangle& t);
 
     ~engine();
 
+    float get_k_screen() { return k_screen; }
+
 private:
     bool initialize();
-    bool initialize(const std::string& screen_mode_type, const int& in_width, const int& in_height);
+    bool initialize(const std::string& screen_mode_type, const float& in_width, const float& in_height);
+
+    //    void scale_to_screen(triangle& t)
+    //    {
+    //        float k = height / width;
+    //        t.v[0].x = t.v[0].x * k;
+    //        t.v[1].x = t.v[1].x * k;
+    //        t.v[2].x = t.v[2].x * k;
+    //    }
+
+    //    void scale_to_screen(rectangle& r)
+    //    {
+    //        float k = height / width;
+    //        r.v[0].x = r.v[0].x * k;
+    //        r.v[1].x = r.v[1].x * k;
+    //        r.v[2].x = r.v[2].x * k;
+    //        r.v[3].x = r.v[3].x * k;
+    //    }
+
+    triangle scale_to_screen(triangle t)
+    {
+        t.v[0].x = t.v[0].x * k_screen;
+        t.v[1].x = t.v[1].x * k_screen;
+        t.v[2].x = t.v[2].x * k_screen;
+
+        logger << "scale_to_screen(triangle t) with k_screen=" << k_screen << DEBUG;
+
+        return t;
+    }
+
+    rectangle scale_to_screen(rectangle r)
+    {
+        r.v[0].x = r.v[0].x * k_screen;
+        r.v[1].x = r.v[1].x * k_screen;
+        r.v[2].x = r.v[2].x * k_screen;
+        r.v[3].x = r.v[3].x * k_screen;
+
+        logger << "scale_to_screen(rectangle r) with k_screen=" << k_screen << DEBUG;
+
+        return r;
+    }
 
     const static std::string system_name;
     std::shared_ptr<Log> logger;
@@ -82,9 +125,9 @@ private:
     SDL_Window* window = nullptr;
 
     //=== screen aspect ratio ===
-    int width;
-    int height;
-    float k_screen = 1.0f; //= height / width;
+    float width;
+    float height;
+    float k_screen; //= height / width;
     std::string screen_mode_type;
 
     //=== sound varibles ===
@@ -113,6 +156,7 @@ private:
 
     void old_create_shader();
 
+    void render_triangle(const triangle& t);
     void render_rectangle(const rectangle& r);
 
     //=== mouse ===

@@ -5,6 +5,16 @@ Log& operator<<(std::shared_ptr<Log> logger, std::string str)
     return *logger << str;
 }
 
+Log& operator<<(std::shared_ptr<Log> logger, float value)
+{
+    return *logger << value;
+}
+
+Log& operator<<(std::shared_ptr<Log> logger, double value)
+{
+    return *logger << value;
+}
+
 Log& operator<<(std::shared_ptr<Log> logger, int value)
 {
     return *logger << value;
