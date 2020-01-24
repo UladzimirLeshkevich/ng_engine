@@ -56,126 +56,73 @@ engine::engine(const std::string& in_screen_mode_type,
 //==========================================================================
 bool engine::events()
 {
-    while (SDL_PollEvent(&test_event)) // TODO check with while and without while
+    while (SDL_PollEvent(&test_event))
     {
-        if (test_event.type == SDL_QUIT)
-        {
-            logger << "window was closed by SDL_QUIT" << INFO;
-            return false;
-        }
+
         if (test_event.type == SDL_KEYDOWN)
         {
             switch (test_event.key.keysym.sym)
             {
-            case (SDLK_w):
-                key_W_flag = false;
-                speed_to_up = 0.0f;
+            case SDLK_w:
+                std::cout << " W is pressed " << '\n';
                 break;
             case SDLK_s:
-                key_S_flag = false;
-                speed_to_down = 0.0f;
+                key_S_flag = true;
+                std::cout << " S is pressed " << '\n';
                 break;
             case SDLK_a:
-                key_A_flag = false;
-                speed_to_left = 0.0f;
+                key_A_flag = true;
+                std::cout << key_A_flag << " A is pressed " << '\n';
                 break;
             case SDLK_d:
-                key_D_flag = false;
-                speed_to_right = 0.0f;
+                std::cout << " D is pressed " << '\n';
                 break;
             case SDLK_LCTRL:
-                key_LCTRL_flag = false;
+                std::cout << " BUTTON_ONE is pressed " << '\n';
                 break;
             case SDLK_SPACE:
-                key_SPACE_flag = false;
+                std::cout << " BUTTON_TWO is pressed " << '\n';
                 break;
             case SDLK_RETURN:
-                key_ENTER_flag = false;
+                std::cout << " START is pressed " << '\n';
                 break;
             case SDLK_ESCAPE:
-                key_Esc_flag = false;
-                logger << "key ESCAPE was pressed" << INFO;
+                std::cout << " ESCAPE is pressed " << '\n';
                 return false;
-            case (SDLK_q):
-                key_Q_flag = false;
-                break;
-            case (SDLK_e):
-                key_E_flag = false;
-                break;
             default:
                 break;
             }
         }
+
         if (test_event.type == SDL_KEYUP)
         {
             switch (test_event.key.keysym.sym)
             {
             case SDLK_w:
-                key_W_flag = true;
-                speed_to_up = speed_to_up_value;
-                logger << "key W was pressed" << INFO;
+                std::cout << " W is released " << '\n';
                 break;
             case SDLK_s:
-                key_S_flag = true;
-                speed_to_down = -speed_to_down_value;
-                logger << "key S was pressed" << INFO;
+                key_S_flag = false;
+                std::cout << " S is released " << '\n';
                 break;
             case SDLK_a:
-                key_A_flag = true;
-                speed_to_left = -speed_to_left_value;
-                logger << "key A was pressed" << INFO;
+                key_A_flag = false;
+                std::cout << key_A_flag << "    A is released " << '\n';
                 break;
             case SDLK_d:
-                key_D_flag = true;
-                speed_to_right = speed_to_right_value;
-                logger << "key D was pressed" << INFO;
+                std::cout << " D is released " << '\n';
                 break;
             case SDLK_LCTRL:
-                key_LCTRL_flag = true;
-                logger << "key LCTRL was pressed" << INFO;
+                std::cout << " BUTTON_ONE is released " << '\n';
                 break;
             case SDLK_SPACE:
-                key_SPACE_flag = true;
-                logger << "key SPACE was pressed" << INFO;
+                std::cout << " BUTTON_TWO is released " << '\n';
                 break;
             case SDLK_RETURN:
-                key_ENTER_flag = true;
-                logger << "key ENTER was pressed" << INFO;
-                break;
-            case (SDLK_q):
-                key_Q_flag = true;
-                logger << "key Q was pressed" << INFO;
-                break;
-            case (SDLK_e):
-                key_E_flag = true;
-                logger << "key E was pressed" << INFO;
+                std::cout << " START is released " << '\n';
                 break;
             default:
                 break;
-            }
-        }
-        //===== mouse ====
-        if (test_event.type == SDL_MOUSEBUTTONDOWN)
-        {
-            if (test_event.button.button == SDL_BUTTON_LEFT)
-            {
-                int w = 0;
-                int h = 0;
-                SDL_GetWindowSize(window, &w, &h);
-
-                key_MOUSE_flag = true;
-                // pr_mouse_x_pos = mouse_x_pos;
-                // pr_mouse_y_pos = mouse_y_pos;
-                mouse_y_pos = test_event.button.y;
-                mouse_x_pos = test_event.button.x;
-                mouse_click = true;
-            }
-        }
-        if (test_event.type == SDL_MOUSEBUTTONUP)
-        {
-            if (test_event.button.button == SDL_BUTTON_LEFT)
-            {
-                mouse_click = false;
             }
         }
     }
@@ -197,6 +144,66 @@ void engine::swap_buffers()
     SDL_GL_SwapWindow(window);
     glClearColor(0.95f, 0.95f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+//==========================================================================
+bool engine::key_W_pressed()
+{
+    return key_W_flag;
+}
+
+//==========================================================================
+bool engine::key_S_pressed()
+{
+    return key_S_flag;
+}
+
+//==========================================================================
+bool engine::key_A_pressed()
+{
+    return key_A_flag;
+}
+
+//==========================================================================
+bool engine::key_D_pressed()
+{
+    return key_D_flag;
+}
+
+//==========================================================================
+bool engine::key_SPACE_pressed()
+{
+    return key_SPACE_flag;
+}
+
+//==========================================================================
+bool engine::key_LCTRL_pressed()
+{
+    return key_LCTRL_flag;
+}
+
+//==========================================================================
+bool engine::key_ENTER_pressed()
+{
+    return key_ENTER_flag;
+}
+
+//==========================================================================
+bool engine::key_Esc_pressed()
+{
+    return key_Esc_flag;
+}
+
+//==========================================================================
+bool engine::key_Q_pressed()
+{
+    return key_Q_flag;
+}
+
+//==========================================================================
+bool engine::key_E_pressed()
+{
+    return key_E_flag;
 }
 
 //====================================================================================

@@ -55,6 +55,18 @@ public:
     void render_triangle(const triangle& t);
     void swap_buffers();
 
+    //=== keyboard ===
+    bool key_W_pressed();
+    bool key_S_pressed();
+    bool key_A_pressed();
+    bool key_D_pressed();
+    bool key_SPACE_pressed();
+    bool key_LCTRL_pressed();
+    bool key_ENTER_pressed();
+    bool key_Esc_pressed();
+    bool key_Q_pressed();
+    bool key_E_pressed();
+
     ~engine();
 
 private:

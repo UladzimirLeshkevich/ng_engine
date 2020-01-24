@@ -4,7 +4,7 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    engine ge("WINDOW_MODE_", 800, 200);
+    engine ge(WINDOW_MODE, 800, 200);
     const std::string sA = "main_sys";
     std::shared_ptr<Log> logger{LogManager::get_logger(sA)};
     //logger->open_logfile("log.txt");
@@ -22,6 +22,21 @@ int main(int /*argc*/, char* /*argv*/[])
     while (loop)
     {
         loop = ge.events();
+
+        std::cout << ge.key_A_pressed() << std::endl;
+
+        if (ge.key_A_pressed())
+        {
+            //std::cout << key_A_flag << std::endl;
+            logger << ge.key_A_pressed() << "AAA" << DEBUG; //bad, to many logs per one click...
+        }
+
+        if (ge.key_S_pressed())
+        {
+            //std::cout << key_A_flag << std::endl;
+            logger << ge.key_S_pressed() << "SSS" << DEBUG;
+        }
+
         ge.render_triangle(tr);
         ge.swap_buffers();
     }
