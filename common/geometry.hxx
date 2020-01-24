@@ -37,8 +37,11 @@ struct rectangle
 
         // direction relative to the x-axis
         v[4] = vertex();
+
+        // center of the rectangle
+        v[5] = vertex();
     }
-    vertex v[5];
+    vertex v[6];
 };
 
 const float pi = 3.1415926f;

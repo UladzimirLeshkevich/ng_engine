@@ -4,7 +4,9 @@ project(game LANGUAGES CXX C)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_executable(game src/game.cxx
+                    src/game_object.cxx
                     include/game.hxx
+                    include/game_object.hxx
               )
 
 target_compile_features(game PUBLIC cxx_std_17)

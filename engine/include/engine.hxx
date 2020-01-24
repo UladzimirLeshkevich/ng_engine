@@ -67,6 +67,8 @@ public:
     bool key_Q_pressed();
     bool key_E_pressed();
 
+    void render(const rectangle& r);
+
     ~engine();
 
 private:
@@ -84,16 +86,6 @@ private:
     int height;
     float k_screen = 1.0f; //= height / width;
     std::string screen_mode_type;
-
-    //==== mooving speed X Y ====
-    float speed_to_right = 0.0f;
-    float speed_to_left = 0.0f;
-    float speed_to_up = 0.0f;
-    float speed_to_down = 0.0f;
-    float speed_to_right_value = 0.0f;
-    float speed_to_left_value = 0.0f;
-    float speed_to_up_value = 0.0f;
-    float speed_to_down_value = 0.0f;
 
     //=== sound varibles ===
     Mix_Music* music;
@@ -120,6 +112,8 @@ private:
     void load_gl_func(const char* func_name, T& result);
 
     void old_create_shader();
+
+    void render_rectangle(const rectangle& r);
 
     //=== mouse ===
     bool key_MOUSE_flag = false;

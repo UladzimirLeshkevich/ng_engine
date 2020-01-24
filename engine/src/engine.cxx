@@ -54,78 +54,120 @@ engine::engine(const std::string& in_screen_mode_type,
 }
 
 //==========================================================================
+void engine::render(const rectangle& r)
+{
+    render_rectangle(r);
+}
+
+//==========================================================================
 bool engine::events()
 {
-    while (SDL_PollEvent(&test_event))
+    SDL_PollEvent(&test_event);
+
+    if (test_event.type == SDL_QUIT)
     {
-
-        if (test_event.type == SDL_KEYDOWN)
+        logger << "SDL_QUIT was pressed" << INFO;
+        return false;
+    }
+    if (test_event.type == SDL_KEYDOWN)
+    {
+        switch (test_event.key.keysym.sym)
         {
-            switch (test_event.key.keysym.sym)
-            {
-            case SDLK_w:
-                std::cout << " W is pressed " << '\n';
-                break;
-            case SDLK_s:
-                key_S_flag = true;
-                std::cout << " S is pressed " << '\n';
-                break;
-            case SDLK_a:
-                key_A_flag = true;
-                std::cout << key_A_flag << " A is pressed " << '\n';
-                break;
-            case SDLK_d:
-                std::cout << " D is pressed " << '\n';
-                break;
-            case SDLK_LCTRL:
-                std::cout << " BUTTON_ONE is pressed " << '\n';
-                break;
-            case SDLK_SPACE:
-                std::cout << " BUTTON_TWO is pressed " << '\n';
-                break;
-            case SDLK_RETURN:
-                std::cout << " START is pressed " << '\n';
-                break;
-            case SDLK_ESCAPE:
-                std::cout << " ESCAPE is pressed " << '\n';
-                return false;
-            default:
-                break;
-            }
-        }
-
-        if (test_event.type == SDL_KEYUP)
-        {
-            switch (test_event.key.keysym.sym)
-            {
-            case SDLK_w:
-                std::cout << " W is released " << '\n';
-                break;
-            case SDLK_s:
-                key_S_flag = false;
-                std::cout << " S is released " << '\n';
-                break;
-            case SDLK_a:
-                key_A_flag = false;
-                std::cout << key_A_flag << "    A is released " << '\n';
-                break;
-            case SDLK_d:
-                std::cout << " D is released " << '\n';
-                break;
-            case SDLK_LCTRL:
-                std::cout << " BUTTON_ONE is released " << '\n';
-                break;
-            case SDLK_SPACE:
-                std::cout << " BUTTON_TWO is released " << '\n';
-                break;
-            case SDLK_RETURN:
-                std::cout << " START is released " << '\n';
-                break;
-            default:
-                break;
-            }
+        case SDLK_w:
+            key_W_flag = true;
+            break;
+        case SDLK_s:
+            key_S_flag = true;
+            break;
+        case SDLK_a:
+            key_A_flag = true;
+            break;
+        case SDLK_d:
+            key_D_flag = true;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = true;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = true;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = true;
+            break;
+        case SDLK_ESCAPE:
+            key_Esc_flag = true;
+            logger << "ESCAPE was pressed" << INFO;
+            return false;
+        case SDLK_q:
+            key_Q_flag = true;
+            break;
+        case SDLK_e:
+            key_E_flag = true;
+            break;
+        default:
+            break;
         }
     }
+    else if (test_event.type == SDL_KEYUP)
+    {
+        switch (test_event.key.keysym.sym)
+        {
+        case SDLK_w:
+            key_W_flag = false;
+            break;
+        case SDLK_s:
+            key_S_flag = false;
+            break;
+        case SDLK_a:
+            key_A_flag = false;
+            break;
+        case SDLK_d:
+            key_D_flag = false;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = false;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = false;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = false;
+            break;
+        case SDLK_q:
+            key_Q_flag = false;
+            break;
+        case SDLK_e:
+            key_E_flag = false;
+            break;
+        default:
+            break;
+        }
+    }
+    //===== mouse ====
+    else if (test_event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (test_event.button.button == SDL_BUTTON_LEFT)
+        {
+            int w = 0;
+            int h = 0;
+            SDL_GetWindowSize(window, &w, &h);
+
+            key_MOUSE_flag = true;
+            // pr_mouse_x_pos = mouse_x_pos;
+            // pr_mouse_y_pos = mouse_y_pos;
+            mouse_y_pos = test_event.button.y;
+            mouse_x_pos = test_event.button.x;
+            mouse_click = true;
+        }
+    }
+    if (test_event.type == SDL_MOUSEBUTTONUP)
+    {
+        if (test_event.button.button == SDL_BUTTON_LEFT)
+        {
+            mouse_click = false;
+        }
+    }
+
     return true;
 }
 
@@ -303,6 +345,17 @@ bool engine::initialize(const std::string& screen_mode_type, const int& in_width
 
     logger << "Engine successful initialized with window " << in_width << "x" << in_height << " in " << screen_mode_type << INFO;
     return true;
+}
+
+//==========================================================================
+void engine::render_rectangle(const rectangle& r)
+{
+    glUniform1i(location, 0); //??
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
+    glEnableVertexAttribArray(0);
+    glValidateProgram(program);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 //==========================================================================

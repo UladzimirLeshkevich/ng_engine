@@ -1,10 +1,11 @@
 #include "game.hxx"
 #include "engine.hxx"
+#include "game_object.hxx"
 #include <iostream>
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    engine ge(WINDOW_MODE, 800, 200);
+    engine ge(WINDOW_MODE, 300, 300);
     const std::string sA = "main_sys";
     std::shared_ptr<Log> logger{LogManager::get_logger(sA)};
     //logger->open_logfile("log.txt");
@@ -17,6 +18,9 @@ int main(int /*argc*/, char* /*argv*/[])
     tr.v[1] = {-0.8794233f, 0.0f, 0.0f, 0.0f};
     tr.v[2] = {-0.5f, -0.5f, 1.0f, 1.0f};
 
+    person p;
+    p.set_geometry(0.f, 0.f, 0.3f, 0.3f);
+
     bool loop = true;
 
     while (loop)
@@ -27,14 +31,15 @@ int main(int /*argc*/, char* /*argv*/[])
 
         if (ge.key_A_pressed())
         {
+            ge.render(p.get_geometry());
             //std::cout << key_A_flag << std::endl;
-            logger << ge.key_A_pressed() << "AAA" << DEBUG; //bad, to many logs per one click...
+            //logger << ge.key_A_pressed() << "AAA" << DEBUG; //bad, to many logs per one click...
         }
 
         if (ge.key_S_pressed())
         {
             //std::cout << key_A_flag << std::endl;
-            logger << ge.key_S_pressed() << "SSS" << DEBUG;
+            //logger << ge.key_S_pressed() << "SSS" << DEBUG;
         }
 
         ge.render_triangle(tr);
