@@ -4,7 +4,7 @@
 class game_object
 {
 public:
-    virtual ~game_object(){};
+    virtual ~game_object() {}
 };
 
 class person : public game_object
@@ -15,18 +15,18 @@ public:
 
     rectangle& get_geometry();
 
-    void set_health(float value);
-    void make_damage(float value);
+    void  set_health(float value);
+    void  make_damage(float value);
     float get_health();
 
-    void set_speed(float in_speed);
+    void  set_speed(float in_speed);
     float get_speed();
 
-    void set_angle(float in_angle);
+    void  set_angle(float in_angle);
     float get_angle();
-    void add_angle(float angle_increment);
+    void  add_angle(float angle_increment);
 
-    void set_scale(float in_scale);
+    void  set_scale(float in_scale);
     float get_scale();
 
     void set_render_marker(bool value);
@@ -36,9 +36,9 @@ public:
 
 private:
     rectangle person_geometry;
-    float health;
-    float speed;
-    float angle; //relative to x axis
-    float scale{1.f};
-    bool render_this{true};
+    float     health;
+    float     speed;
+    float     angle; // relative to x axis
+    float     scale{ 1.f };
+    bool      render_this{ true };
 };
