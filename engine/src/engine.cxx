@@ -263,6 +263,48 @@ engine::~engine()
 }
 
 //====================================================================================
+void engine::move(float speed, rectangle& geometry)
+{
+    point tmp;
+    tmp.x = geometry.v[4].x - 0.0f;
+    tmp.y = geometry.v[4].y - 0.0f;
+    normalize_vector(tmp);
+    trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
+}
+
+//====================================================================================
+void engine::normalize_vector(point& v)
+{
+    point tmp;
+    tmp.x = v.x / sqrt(v.x * v.x + v.y * v.y);
+    tmp.y = v.y / sqrt(v.x * v.x + v.y * v.y);
+    v.x = tmp.x;
+    v.y = tmp.y;
+}
+
+//====================================================================================
+void engine::trans_matrix(float fdeltaX, float fdeltaY, rectangle& r)
+{
+    r.v[0].x = (1 * r.v[0].x + 0 * r.v[0].y + fdeltaX * 1);
+    r.v[0].y = (0 * r.v[0].x + 1 * r.v[0].y + fdeltaY * 1);
+
+    r.v[1].x = (1 * r.v[1].x + 0 * r.v[1].y + fdeltaX * 1);
+    r.v[1].y = (0 * r.v[1].x + 1 * r.v[1].y + fdeltaY * 1);
+
+    r.v[2].x = (1 * r.v[2].x + 0 * r.v[2].y + fdeltaX * 1);
+    r.v[2].y = (0 * r.v[2].x + 1 * r.v[2].y + fdeltaY * 1);
+
+    r.v[3].x = (1 * r.v[3].x + 0 * r.v[3].y + fdeltaX * 1);
+    r.v[3].y = (0 * r.v[3].x + 1 * r.v[3].y + fdeltaY * 1);
+
+    r.v[4].x = (1 * r.v[4].x + 0 * r.v[4].y + fdeltaX * 1);
+    r.v[4].y = (0 * r.v[4].x + 1 * r.v[4].y + fdeltaY * 1);
+
+    r.v[5].x = (1 * r.v[5].x + 0 * r.v[5].y + fdeltaX * 1);
+    r.v[5].y = (0 * r.v[5].x + 1 * r.v[5].y + fdeltaY * 1);
+}
+
+//====================================================================================
 bool engine::initialize()
 {
     if ((SDL_Init(SDL_INIT_EVERYTHING)) != 0)

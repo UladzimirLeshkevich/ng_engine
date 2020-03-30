@@ -16,34 +16,34 @@
 #define LOGFILELINE __FILE__ << ":" << __LINE__
 #define LOGFUNCLINE __FUNCTION__ << ":" << __LINE__
 
-extern PFNGLCREATESHADERPROC             glCreateShader;
-extern PFNGLSHADERSOURCEPROC             glShaderSource;
-extern PFNGLCOMPILESHADERPROC            glCompileShader;
-extern PFNGLGETSHADERIVPROC              glGetShaderiv;
-extern PFNGLGETSHADERINFOLOGPROC         glGetShaderInfoLog;
-extern PFNGLDELETESHADERPROC             glDeleteShader;
-extern PFNGLCREATEPROGRAMPROC            glCreateProgram;
-extern PFNGLATTACHSHADERPROC             glAttachShader;
-extern PFNGLBINDATTRIBLOCATIONPROC       glBindAttribLocation;
-extern PFNGLLINKPROGRAMPROC              glLinkProgram;
-extern PFNGLGETPROGRAMIVPROC             glGetProgramiv;
-extern PFNGLGETPROGRAMINFOLOGPROC        glGetProgramInfoLog;
-extern PFNGLDELETEPROGRAMPROC            glDeleteProgram;
-extern PFNGLUSEPROGRAMPROC               glUseProgram;
-extern PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer;
-extern PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray;
-extern PFNGLVALIDATEPROGRAMPROC          glValidateProgram;
-extern PFNGLGETUNIFORMLOCATIONPROC       glGetUniformLocation;
-extern PFNGLUNIFORM1IPROC                glUniform1i;
-extern PFNGLACTIVETEXTUREPROC            glActiveTexture_;
-extern PFNGLUNIFORM4FVPROC               glUniform4fv;
+extern PFNGLCREATESHADERPROC glCreateShader;
+extern PFNGLSHADERSOURCEPROC glShaderSource;
+extern PFNGLCOMPILESHADERPROC glCompileShader;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLDELETESHADERPROC glDeleteShader;
+extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLATTACHSHADERPROC glAttachShader;
+extern PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation;
+extern PFNGLLINKPROGRAMPROC glLinkProgram;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
+extern PFNGLUSEPROGRAMPROC glUseProgram;
+extern PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+extern PFNGLVALIDATEPROGRAMPROC glValidateProgram;
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+extern PFNGLUNIFORM1IPROC glUniform1i;
+extern PFNGLACTIVETEXTUREPROC glActiveTexture_;
+extern PFNGLUNIFORM4FVPROC glUniform4fv;
 extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 
-const GLenum      VERTEX_SHADER   = GL_VERTEX_SHADER;
-const GLenum      FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
-const std::string INVERT_TEXTURE  = "Invert texture";
-const std::string FULL_SCREEN     = "Full screen";
-const std::string WINDOW_MODE     = "Window mode";
+const GLenum VERTEX_SHADER = GL_VERTEX_SHADER;
+const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
+const std::string INVERT_TEXTURE = "Invert texture";
+const std::string FULL_SCREEN = "Full screen";
+const std::string WINDOW_MODE = "Window mode";
 
 class engine
 {
@@ -74,6 +74,11 @@ public:
     ~engine();
 
     float get_k_screen() { return k_screen; }
+
+    // mooving
+    void move(float speed, rectangle& geometry);
+    void normalize_vector(point& v);
+    void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
 
 private:
     bool initialize();
@@ -137,15 +142,15 @@ private:
     }
 
     const static std::string system_name;
-    std::shared_ptr<Log>     logger;
-    SDL_Event                test_event;
+    std::shared_ptr<Log> logger;
+    SDL_Event test_event;
 
     SDL_Window* window = nullptr;
 
     //=== screen aspect ratio ===
-    float       width;
-    float       height;
-    float       k_screen; //= height / width;
+    float width;
+    float height;
+    float k_screen; //= height / width;
     std::string screen_mode_type;
 
     //=== sound varibles ===
@@ -154,20 +159,20 @@ private:
     // int channel;
 
     //=== keyboard flags===
-    bool key_W_flag{ false };
-    bool key_S_flag{ false };
-    bool key_A_flag{ false };
-    bool key_D_flag{ false };
-    bool key_SPACE_flag{ false };
-    bool key_LCTRL_flag{ false };
-    bool key_ENTER_flag{ false };
-    bool key_Esc_flag{ false };
-    bool key_Q_flag{ false };
-    bool key_E_flag{ false };
+    bool key_W_flag{false};
+    bool key_S_flag{false};
+    bool key_A_flag{false};
+    bool key_D_flag{false};
+    bool key_SPACE_flag{false};
+    bool key_LCTRL_flag{false};
+    bool key_ENTER_flag{false};
+    bool key_Esc_flag{false};
+    bool key_Q_flag{false};
+    bool key_E_flag{false};
 
     //=== openGL ===
-    GLuint program{ 0 };
-    int    location{ 0 };
+    GLuint program{0};
+    int location{0};
 
     template <typename T>
     void load_gl_func(const char* func_name, T& result);
@@ -178,8 +183,8 @@ private:
     void render_rectangle(const rectangle& r);
 
     //=== mouse ===
-    bool  key_MOUSE_flag{ false };
-    bool  mouse_click{ false };
-    float mouse_x_pos{ 0.f };
-    float mouse_y_pos{ 0.f };
+    bool key_MOUSE_flag{false};
+    bool mouse_click{false};
+    float mouse_x_pos{0.f};
+    float mouse_y_pos{0.f};
 };
