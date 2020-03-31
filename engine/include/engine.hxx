@@ -77,6 +77,67 @@ public:
 
     // mooving
     void move(float speed, rectangle& geometry);
+
+    void move(float speed, rectangle& geometry, int direction)
+    {
+        //        left - 0
+        //        right - 1
+        //        up - 2
+        //        down - 3
+        //        rotate - 4
+        //        up_left - 5
+        float speed_x{0.f};
+        float speed_y{0.f};
+        point tmp;
+        switch (direction)
+        {
+        case 0:
+            std::cout << "left " << direction << std::endl; // lvi debug
+            speed_x = -speed;
+            std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 1:
+            std::cout << "right " << direction << std::endl; // lvi debug
+            speed_x = speed;
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 2:
+            std::cout << "up " << direction << std::endl; // lvi debug
+            speed_y = speed;
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 3:
+            std::cout << "down " << direction << std::endl; // lvi debug
+            speed_y = -speed;
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 4:
+            std::cout << "rotate " << direction << std::endl; // lvi debug
+            tmp.x = geometry.v[4].x - 0.0f;
+            tmp.y = geometry.v[4].y - 0.0f;
+            normalize_vector(tmp);
+            trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
+            break;
+        case 5:
+            std::cout << "up_left " << direction << std::endl; // lvi debug
+            speed_x = -speed;
+            speed_y = speed;
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        }
+
+        //        point tmp;
+        //        tmp.x = geometry.v[4].x - 0.0f;
+        //        tmp.y = geometry.v[4].y - 0.0f;
+        //        normalize_vector(tmp);
+
+        //        std::cout << "tmp.x = " << tmp.x << std::endl; // lvi debug
+        //        std::cout << "tmp.y = " << tmp.y << std::endl; // lvi debug
+
+        //        trans_matrix(speed_x, speed_y, geometry);
+    }
+
     void normalize_vector(point& v);
     void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
 
@@ -135,8 +196,8 @@ private:
         input.v[2].x = input.v[2].x * k_screen;
         input.v[3].x = input.v[3].x * k_screen;
 
-        logger << "scale_to_screen(T input) with k_screen=" << k_screen
-               << DEBUG;
+        // logger << "scale_to_screen(T input) with k_screen=" << k_screen
+        //       << DEBUG;
 
         return input;
     }

@@ -1,12 +1,15 @@
 #pragma once
 #include "../../common/geometry.hxx"
+#include <iostream> // lvi debug
 
 enum direction
 {
     left,
     right,
     up,
-    down
+    down,
+    rotate, // lvi need or not ??
+    up_left // lvi need or not ??
 };
 
 class game_object
@@ -40,17 +43,9 @@ public:
     void set_render_marker(bool value);
     bool get_render_marker();
 
-    void set_direction(const direction in_direction)
-    {
-        m_direction = in_direction;
+    void set_direction(const direction in_direction) { m_direction = in_direction; }
 
-        switch (in_direction)
-        {
-        case left:
-            person_geometry.v[4].y = person_geometry.v[5].y;
-            break;
-        }
-    }
+    direction get_direction() { return m_direction; }
 
     virtual ~person() {}
 

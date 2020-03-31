@@ -269,6 +269,11 @@ void engine::move(float speed, rectangle& geometry)
     tmp.x = geometry.v[4].x - 0.0f;
     tmp.y = geometry.v[4].y - 0.0f;
     normalize_vector(tmp);
+
+    std::cout << "tmp.x = " << tmp.x << std::endl; // lvi debug
+    std::cout << "tmp.y = " << tmp.y << std::endl; // lvi debug
+    std::cout << "speed = " << speed << std::endl; // lvi debug
+
     trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
 }
 

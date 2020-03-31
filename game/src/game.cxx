@@ -19,8 +19,8 @@ int main(int /*argc*/, char* /*argv*/[])
     tr.v[2] = {-0.5f, -0.5f, 1.0f, 1.0f};
 
     person p;
-    p.set_geometry(0.f, 0.f, 0.3f, 0.3f);
-    p.set_speed(0.0001f);
+    p.set_geometry(0.f, 0.1f, 0.3f, 0.3f);
+    p.set_speed(0.001f);
 
     bool loop = true;
 
@@ -32,18 +32,35 @@ int main(int /*argc*/, char* /*argv*/[])
 
         if (ge.key_A_pressed())
         {
-
-            std::cout << "k_screen=  " << ge.get_k_screen() << std::endl;
+            p.set_direction(left);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+            // std::cout << "k_screen=  " << ge.get_k_screen() << std::endl;
             // logger << ge.key_A_pressed() << "AAA" << DEBUG; //bad, to many
             // logs per one click...
         }
 
         if (ge.key_S_pressed())
         {
-            p.set_direction(left);
-            ge.move(p.get_speed(), p.get_geometry());
-            // std::cout << key_A_flag << std::endl;
-            // logger << ge.key_S_pressed() << "SSS" << DEBUG;
+            p.set_direction(down);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+        }
+
+        if (ge.key_D_pressed())
+        {
+            p.set_direction(right);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+        }
+
+        if (ge.key_W_pressed())
+        {
+            p.set_direction(up);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+        }
+
+        if (ge.key_Q_pressed())
+        {
+            p.set_direction(up_left);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
         ge.render(p.get_geometry());
