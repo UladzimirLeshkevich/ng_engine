@@ -21,6 +21,7 @@ int main(int /*argc*/, char* /*argv*/[])
     person p;
     p.set_geometry(0.f, 0.1f, 0.3f, 0.3f);
     p.set_speed(0.001f);
+    p.set_texture(ge.load_image("panzer_base.png"));
 
     bool loop = true;
 
@@ -62,7 +63,7 @@ int main(int /*argc*/, char* /*argv*/[])
             p.set_direction(up_left);
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
-
+        // ge.render_textured_rectangle(p.get_geometry(), p.get_texture()); // lvi need debug here !!
         ge.render(p.get_geometry());
         ge.render(tr);
         // ge.render_triangle(tr);

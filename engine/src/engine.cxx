@@ -278,6 +278,57 @@ void engine::move(float speed, rectangle& geometry)
 }
 
 //====================================================================================
+void engine::move(float speed, rectangle& geometry, int direction)
+{
+    //        left - 0
+    //        right - 1
+    //        up - 2
+    //        down - 3
+    //        rotate - 4
+    //        up_left - 5
+    float speed_x{0.f};
+    float speed_y{0.f};
+    point tmp;
+    switch (direction)
+    {
+    case 0:
+        std::cout << "left " << direction << std::endl; // lvi debug
+        speed_x = -speed;
+        std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
+        trans_matrix(speed_x, speed_y, geometry);
+        break;
+    case 1:
+        std::cout << "right " << direction << std::endl; // lvi debug
+        speed_x = speed;
+        trans_matrix(speed_x, speed_y, geometry);
+        break;
+    case 2:
+        std::cout << "up " << direction << std::endl; // lvi debug
+        speed_y = speed;
+        trans_matrix(speed_x, speed_y, geometry);
+        break;
+    case 3:
+        std::cout << "down " << direction << std::endl; // lvi debug
+        speed_y = -speed;
+        trans_matrix(speed_x, speed_y, geometry);
+        break;
+    case 4:
+        std::cout << "rotate " << direction << std::endl; // lvi debug
+        tmp.x = geometry.v[4].x - 0.0f;
+        tmp.y = geometry.v[4].y - 0.0f;
+        normalize_vector(tmp);
+        trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
+        break;
+    case 5:
+        std::cout << "up_left " << direction << std::endl; // lvi debug
+        speed_x = -speed;
+        speed_y = speed;
+        trans_matrix(speed_x, speed_y, geometry);
+        break;
+    }
+}
+
+//====================================================================================
 void engine::normalize_vector(point& v)
 {
     point tmp;
@@ -307,6 +358,56 @@ void engine::trans_matrix(float fdeltaX, float fdeltaY, rectangle& r)
 
     r.v[5].x = (1 * r.v[5].x + 0 * r.v[5].y + fdeltaX * 1);
     r.v[5].y = (0 * r.v[5].x + 1 * r.v[5].y + fdeltaY * 1);
+}
+
+//====================================================================================
+GLuint engine::load_image(std::string filename)
+{
+    std::string image_parth_and_name = resources + filename;
+    const char* file = image_parth_and_name.data();
+    SDL_Surface* img = IMG_Load(file);
+
+    if (!img)
+    {
+        std::cerr << "image file " << image_parth_and_name << " is not loaded\n"
+                  << IMG_GetError() << "\n";
+    }
+
+    texture_id++;
+    // glActiveTexture_(GL_TEXTURE0 + texture_id);
+
+    // glGenTextures(1, &texture_id);
+    glGenTextures(1, &texture_id);
+
+    // glGenTextures(1, tex_id_array);
+    glActiveTexture_(GL_TEXTURE0 + texture_id);
+
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    GLint mipmap_level = 0;
+    GLint border = 0;
+    glTexImage2D(GL_TEXTURE_2D, mipmap_level, GL_RGBA, img->w, img->h, border,
+                 GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    return texture_id;
+}
+
+//====================================================================================
+void engine::render_textured_rectangle(const rectangle& r, GLint texture_number)
+{
+    logger << "render_textured_rectangle, location = " << location << " texture_number = " << texture_number << DEBUG;
+    glUniform1i(location, 0 + texture_number); // lvi need debug here !!
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
+    glEnableVertexAttribArray(0);
+
+    // texture coordinates
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0].tx);
+    glEnableVertexAttribArray(1);
+    glValidateProgram(program);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 //====================================================================================
@@ -404,7 +505,7 @@ bool engine::initialize(const std::string& screen_mode_type, const float& in_wid
 //==========================================================================
 void engine::render_rectangle(const rectangle& r)
 {
-    glUniform1i(location, 0); //??
+    // glUniform1i(location, 0); // lvi debug textures
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
     glEnableVertexAttribArray(0);
@@ -495,6 +596,7 @@ void engine::old_create_shader()
                   << "\n";
         logger << "Uniform problem" << SYSTEM_ERROR;
     }
+    logger << "location = " << location << DEBUG;
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

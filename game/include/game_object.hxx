@@ -1,6 +1,7 @@
 #pragma once
 #include "../../common/geometry.hxx"
 #include <iostream> // lvi debug
+#include <vector>
 
 enum direction
 {
@@ -49,6 +50,40 @@ public:
 
     virtual ~person() {}
 
+    //textures
+
+    //    void render_with_texture(int number)
+    //    {
+    //        render_textured_rectangle(person_geometry, number);
+    //    }
+
+    void set_texture(int texture_id)
+    {
+        person_texture_id = texture_id;
+    }
+
+    int get_texture()
+    {
+        return person_texture_id;
+    }
+
+    void set_texture_to_sprite(int texture_id)
+    {
+        person_sprite.push_back(texture_id);
+    }
+
+    int get_from_sprite(int num)
+    {
+        int number;
+        number = person_sprite.at(num);
+        return number;
+    }
+
+    std::vector<unsigned int>& get_sprite()
+    {
+        return person_sprite;
+    }
+
 private:
     direction m_direction;
     rectangle person_geometry;
@@ -57,4 +92,8 @@ private:
     float angle; // relative to x axis
     float scale{1.f};
     bool render_this{true};
+
+    //textures
+    unsigned int person_texture_id;
+    std::vector<unsigned int> person_sprite;
 };
