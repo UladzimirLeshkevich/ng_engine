@@ -5,6 +5,10 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}../../../build)
 
 add_library(${PROJECT_NAME} SHARED include/engine.hxx
                                    src/engine.cxx
+                                   include/timer.hxx
+                                   src/timer.cxx
+                                   include/animation.hxx
+                                   src/animation.cxx
                                    ../common/geometry.hxx
                                    )
 

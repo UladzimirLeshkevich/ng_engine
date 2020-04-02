@@ -67,6 +67,12 @@ void engine::render(const triangle& t)
 }
 
 //==========================================================================
+void engine::render(const rectangle& r, GLint texture_number)
+{
+    render_textured_rectangle(scale_to_screen(r), texture_number);
+}
+
+//==========================================================================
 bool engine::events()
 {
     SDL_PollEvent(&test_event);
@@ -410,6 +416,17 @@ void engine::render_textured_rectangle(const rectangle& r, GLint texture_number)
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+//==========================================================================
+void engine::render_rectangle(const rectangle& r)
+{
+    glUniform1i(location, 0); // lvi debug textures
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
+    glEnableVertexAttribArray(0);
+    glValidateProgram(program);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
 //====================================================================================
 bool engine::initialize()
 {
@@ -500,17 +517,6 @@ bool engine::initialize(const std::string& screen_mode_type, const float& in_wid
 
     logger << "Engine successful initialized with window " << in_width << "x" << in_height << " in " << screen_mode_type << INFO;
     return true;
-}
-
-//==========================================================================
-void engine::render_rectangle(const rectangle& r)
-{
-    // glUniform1i(location, 0); // lvi debug textures
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
-    glEnableVertexAttribArray(0);
-    glValidateProgram(program);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 //==========================================================================

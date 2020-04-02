@@ -57,24 +57,24 @@ public:
     //        render_textured_rectangle(person_geometry, number);
     //    }
 
-    void set_texture(int texture_id)
+    void set_texture(unsigned int texture_id)
     {
         person_texture_id = texture_id;
     }
 
-    int get_texture()
+    unsigned int get_texture()
     {
         return person_texture_id;
     }
 
-    void set_texture_to_sprite(int texture_id)
+    void set_texture_to_sprite(unsigned int texture_id)
     {
         person_sprite.push_back(texture_id);
     }
 
-    int get_from_sprite(int num)
+    unsigned int get_from_sprite(unsigned int num)
     {
-        int number;
+        unsigned int number;
         number = person_sprite.at(num);
         return number;
     }

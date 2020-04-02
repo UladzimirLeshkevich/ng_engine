@@ -18,18 +18,32 @@ int main(int /*argc*/, char* /*argv*/[])
     tr.v[1] = {-0.8794233f, 0.0f, 0.0f, 0.0f};
     tr.v[2] = {-0.5f, -0.5f, 1.0f, 1.0f};
 
-    person p;
+    person p, p2;
     p.set_geometry(0.f, 0.1f, 0.3f, 0.3f);
+    p2.set_geometry(0.5f, 0.5f, 0.4f, 0.4f);
     p.set_speed(0.001f);
     p.set_texture(ge.load_image("panzer_base.png"));
+    //p2.set_texture(ge.load_image("robot_2.png"));
+
+    p2.set_texture_to_sprite(ge.load_image("robot_2.png"));
+    p2.set_texture_to_sprite(ge.load_image("robot_1.png"));
 
     bool loop = true;
+
+    // animation
+    animation run;
+    run.set_fps(2);
+    run.set_number_of_frames(2);
+    int run_number = 0;
+    timer ani_timer;
+    float delta_time = 0.f;
 
     while (loop)
     {
         loop = ge.events();
 
-        // std::cout << ge.key_A_pressed() << std::endl;
+        //============ TIMERS ====================
+        delta_time = ani_timer.elapsed();
 
         if (ge.key_A_pressed())
         {
@@ -63,10 +77,23 @@ int main(int /*argc*/, char* /*argv*/[])
             p.set_direction(up_left);
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
-        // ge.render_textured_rectangle(p.get_geometry(), p.get_texture()); // lvi need debug here !!
-        ge.render(p.get_geometry());
-        ge.render(tr);
+
+        // ge.render(p.get_geometry());
+        // ge.render_textured_rectangle(p.get_geometry(), ); // lvi need debug here !!
+        // ge.render_textured_rectangle(p.get_geometry(), p.get_texture());
+        // ge.render(tr);
+
         // ge.render_triangle(tr);
+
+        //=== animation ===
+        run.restart();
+        run_number = run.current_frame_number(delta_time);
+        ge.render(p2.get_geometry(),
+                  p2.get_from_sprite(run_number));
+
+        ge.render(p.get_geometry(), p.get_texture());
+        //ge.render(p2.get_geometry(), p2.get_texture());
+
         ge.swap_buffers();
     }
 

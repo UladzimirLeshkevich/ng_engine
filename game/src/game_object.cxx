@@ -22,6 +22,19 @@ void person::set_geometry(float center_x, float center_y, float width_x, float h
     // center
     person_geometry.v[5].x = center_x;
     person_geometry.v[5].y = center_y;
+
+    // textures
+    person_geometry.v[0].tx = 0.f;
+    person_geometry.v[0].ty = 0.f;
+
+    person_geometry.v[1].tx = 0.f;
+    person_geometry.v[1].ty = 1.f;
+
+    person_geometry.v[2].tx = 1.f;
+    person_geometry.v[2].ty = 0.f;
+
+    person_geometry.v[3].tx = 1.f;
+    person_geometry.v[3].ty = 1.f;
 }
 
 //==========================================================================
