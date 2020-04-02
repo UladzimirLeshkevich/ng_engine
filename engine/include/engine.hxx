@@ -46,6 +46,8 @@ const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
 const std::string INVERT_TEXTURE = "Invert texture";
 const std::string FULL_SCREEN = "Full screen";
 const std::string WINDOW_MODE = "Window mode";
+const std::string top_view{"top_view"};
+const std::string front_view{"front_view"};
 
 class engine
 {
@@ -57,6 +59,10 @@ public:
     bool events();
 
     void swap_buffers();
+
+    void set_view_mode(const std::string& in_mode);
+
+    void switch_view_mode();
 
     //=== keyboard ===
     bool key_W_pressed();
@@ -89,28 +95,6 @@ public:
     GLuint load_image(std::string filename);
     void render_textured_rectangle(const rectangle& r, GLint texture_number);
     void render(const rectangle& r, GLint texture_number);
-
-    rectangle& invert_texture_by_y_p(rectangle& r) // lvi delete
-    {
-        if (0.f == r.v[0].ty &&
-            1.f == r.v[1].ty &&
-            0.f == r.v[2].ty &&
-            1.f == r.v[3].ty)
-        {
-            r.v[0].ty = 1.f;
-            r.v[1].ty = 0.f;
-            r.v[2].ty = 1.f;
-            r.v[3].ty = 0.f;
-        }
-        else
-        {
-            r.v[0].ty = 0.f;
-            r.v[1].ty = 1.f;
-            r.v[2].ty = 0.f;
-            r.v[3].ty = 1.f;
-        }
-        return r;
-    }
 
 private:
     bool initialize();
@@ -175,134 +159,19 @@ private:
     float mouse_x_pos{0.f};
     float mouse_y_pos{0.f};
 
-    //=== textures ===
-    GLuint texture_id{0};
     std::string resources{"res/"};
 
-    rectangle invert_texture_by_x(rectangle r)
-    {
-        r.v[0].tx = 1.f;
-        r.v[0].ty = 0.f;
+    //=== textures ===
+    GLuint texture_id{0};
 
-        r.v[1].tx = 1.f;
-        r.v[1].ty = 1.f;
+    rectangle invert_texture_by_x(rectangle r); // lvi delete
+    rectangle invert_texture_by_y(rectangle r); // lvi delete
+    void texture_look_left(rectangle& r);
+    void texture_look_right(rectangle& r);
+    void texture_look_down(rectangle& r);
+    void texture_look_up(rectangle& r);
+    void texture_look_right_rotate(rectangle& r);
+    void texture_look_left_rotate(rectangle& r);
 
-        r.v[2].tx = 0.f;
-        r.v[2].ty = 0.f;
-
-        r.v[3].tx = 0.f;
-        r.v[3].ty = 1.f;
-
-        return r;
-    }
-
-    rectangle invert_texture_by_y(rectangle r)
-    {
-        r.v[0].tx = 0.f;
-        r.v[0].ty = 1.f;
-
-        r.v[1].tx = 0.f;
-        r.v[1].ty = 0.f;
-
-        r.v[2].tx = 1.f;
-        r.v[2].ty = 1.f;
-
-        r.v[3].tx = 1.f;
-        r.v[3].ty = 0.f;
-
-        return r;
-    }
-
-    void texture_look_left(rectangle& r)
-    {
-        //        if (0.f == r.v[0].tx)
-        //            return;
-
-        r.v[0].tx = 0.f;
-        r.v[1].tx = 0.f;
-        r.v[2].tx = 1.f;
-        r.v[3].tx = 1.f;
-    }
-
-    void texture_look_right(rectangle& r)
-    {
-        //        if (1.f == r.v[0].tx)
-        //            return;
-
-        r.v[0].tx = 1.f;
-        r.v[1].tx = 1.f;
-        r.v[2].tx = 0.f;
-        r.v[3].tx = 0.f;
-    }
-
-    void texture_look_down(rectangle& r)
-    {
-        //                if (1.f == r.v[0].ty)
-        //                    return;
-        r.v[0].tx = 0.f;
-        r.v[0].ty = 1.f;
-
-        r.v[1].tx = 0.f;
-        r.v[1].ty = 0.f;
-
-        r.v[2].tx = 1.f;
-        r.v[2].ty = 1.f;
-
-        r.v[3].tx = 1.f;
-        r.v[3].ty = 0.f;
-    }
-
-    void texture_look_up(rectangle& r)
-    {
-        //        if (0.f == r.v[0].ty)
-        //            return;
-
-        r.v[0].tx = 0.f;
-        r.v[0].ty = 0.f;
-
-        r.v[1].tx = 0.f;
-        r.v[1].ty = 1.f;
-
-        r.v[2].tx = 1.f;
-        r.v[2].ty = 0.f;
-
-        r.v[3].tx = 1.f;
-        r.v[3].ty = 1.f;
-    }
-
-    void texture_look_right_rotate(rectangle& r)
-    {
-        //        if (0.f == r.v[0].ty && 1.f == r.v[0].ty && 1.f == r.v[1].tx && 1.f == r.v[1].ty)
-        //            return;
-
-        r.v[0].tx = 0.f;
-        r.v[0].ty = 1.f;
-
-        r.v[1].tx = 1.f;
-        r.v[1].ty = 1.f;
-
-        r.v[2].tx = 0.f;
-        r.v[2].ty = 0.f;
-
-        r.v[3].tx = 1.f;
-        r.v[3].ty = 0.f;
-    }
-
-    void texture_look_left_rotate(rectangle& r)
-    {
-        //        if (1.f == r.v[0].ty && 0.f == r.v[0].ty && 0.f == r.v[1].tx && 0.f == r.v[1].ty)
-        //            return;
-
-        r.v[0].tx = 1.f;
-        r.v[0].ty = 0.f;
-
-        r.v[1].tx = 0.f;
-        r.v[1].ty = 0.f;
-
-        r.v[2].tx = 1.f;
-        r.v[2].ty = 1.f;
-
-        r.v[3].tx = 0.f;
-        r.v[3].ty = 1.f;
-    }
+    std::string view_mode; // top or front => for choosing changing textures coordinates bihavior
 };

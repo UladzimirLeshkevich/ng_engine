@@ -79,6 +79,12 @@ int main(int /*argc*/, char* /*argv*/[])
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
+        if (ge.key_LCTRL_pressed())
+        {
+            // ge.set_view_mode(front_view);
+            ge.switch_view_mode();
+        }
+
         // ge.render(p.get_geometry());
         // ge.render_textured_rectangle(p.get_geometry(), ); // lvi need debug here !!
         // ge.render_textured_rectangle(p.get_geometry(), p.get_texture());

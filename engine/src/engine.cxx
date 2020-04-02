@@ -28,7 +28,7 @@ PFNGLUNIFORM4FVPROC glUniform4fv = nullptr;
 PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = nullptr;
 
 //====================================================================================
-engine::engine() : logger(LogManager::get_logger(system_name))
+engine::engine() : logger(LogManager::get_logger(system_name)), view_mode(front_view)
 {
     initialize();
 }
@@ -40,7 +40,8 @@ engine::engine(const std::string& in_screen_mode_type,
                                          width(in_width),
                                          height(in_height),
                                          k_screen((in_height / in_width)),
-                                         screen_mode_type(in_screen_mode_type)
+                                         screen_mode_type(in_screen_mode_type),
+                                         view_mode(top_view)
 {
     logger->open_logfile("log.txt");
 
@@ -202,6 +203,25 @@ void engine::swap_buffers()
 }
 
 //==========================================================================
+void engine::set_view_mode(const std::string& in_mode)
+{
+    if (top_view != in_mode && front_view != in_mode)
+    {
+        logger << LOGFUNCLINE << "invalid in_mode value, using current value == " << view_mode << SYSTEM_ERROR;
+        return;
+    }
+    view_mode = in_mode;
+}
+
+//==========================================================================
+void engine::switch_view_mode()
+{
+    (top_view == view_mode) ? view_mode = front_view : view_mode = top_view;
+
+    logger << LOGFUNCLINE << "view_mode switched to " << view_mode << INFO;
+}
+
+//==========================================================================
 bool engine::key_W_pressed()
 {
     return key_W_flag;
@@ -302,14 +322,20 @@ void engine::move(float speed, rectangle& geometry, int direction)
         speed_x = -speed;
         std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
         // texture_look_left(geometry);                       // lvi test
-        texture_look_left_rotate(geometry); // lvi test
+
+        (top_view == view_mode) ? texture_look_left_rotate(geometry) : texture_look_left(geometry); // lvi test
+
+        // texture_look_left_rotate(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 1:
         std::cout << "right " << direction << std::endl; // lvi debug
         speed_x = speed;
         // texture_look_right(geometry); // lvi test
-        texture_look_right_rotate(geometry); // lvi test
+
+        (top_view == view_mode) ? texture_look_right_rotate(geometry) : texture_look_right(geometry); // lvi test
+
+        // texture_look_right_rotate(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 2:
@@ -409,7 +435,6 @@ GLuint engine::load_image(std::string filename)
 //====================================================================================
 void engine::render_textured_rectangle(const rectangle& r, GLint texture_number)
 {
-    logger << "render_textured_rectangle, location = " << location << " texture_number = " << texture_number << DEBUG;
     glUniform1i(location, 0 + texture_number); // lvi need debug here !!
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), &r.v[0]);
@@ -431,6 +456,165 @@ void engine::render_rectangle(const rectangle& r)
     glEnableVertexAttribArray(0);
     glValidateProgram(program);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+//==========================================================================
+rectangle engine::invert_texture_by_x(rectangle r)
+{
+    r.v[0].tx = 1.f;
+    r.v[0].ty = 0.f;
+
+    r.v[1].tx = 1.f;
+    r.v[1].ty = 1.f;
+
+    r.v[2].tx = 0.f;
+    r.v[2].ty = 0.f;
+
+    r.v[3].tx = 0.f;
+    r.v[3].ty = 1.f;
+
+    return r;
+}
+
+//==========================================================================
+rectangle engine::invert_texture_by_y(rectangle r)
+{
+    r.v[0].tx = 0.f;
+    r.v[0].ty = 1.f;
+
+    r.v[1].tx = 0.f;
+    r.v[1].ty = 0.f;
+
+    r.v[2].tx = 1.f;
+    r.v[2].ty = 1.f;
+
+    r.v[3].tx = 1.f;
+    r.v[3].ty = 0.f;
+
+    return r;
+}
+
+//==========================================================================
+void engine::texture_look_left(rectangle& r)
+{
+    //        if (0.f == r.v[0].tx)
+    //            return;
+
+    r.v[0].tx = 0.f;
+    r.v[0].ty = 0.f;
+
+    r.v[1].tx = 0.f;
+    r.v[1].ty = 1.f;
+
+    r.v[2].tx = 1.f;
+    r.v[2].ty = 0.f;
+
+    r.v[3].tx = 1.f;
+    r.v[3].ty = 1.f;
+
+    //    r.v[0].tx = 0.f;
+    //    r.v[1].tx = 0.f;
+    //    r.v[2].tx = 1.f;
+    //    r.v[3].tx = 1.f;
+}
+
+//==========================================================================
+void engine::texture_look_right(rectangle& r)
+{
+    //        if (1.f == r.v[0].tx)
+    //            return;
+
+    r.v[0].tx = 1.f;
+    r.v[0].ty = 0.f;
+
+    r.v[1].tx = 1.f;
+    r.v[1].ty = 1.f;
+
+    r.v[2].tx = 0.f;
+    r.v[2].ty = 0.f;
+
+    r.v[3].tx = 0.f;
+    r.v[3].ty = 1.f;
+
+    //    r.v[0].tx = 1.f;
+    //    r.v[1].tx = 1.f;
+    //    r.v[2].tx = 0.f;
+    //    r.v[3].tx = 0.f;
+}
+
+//==========================================================================
+void engine::texture_look_down(rectangle& r)
+{
+    //                if (1.f == r.v[0].ty)
+    //                    return;
+    r.v[0].tx = 0.f;
+    r.v[0].ty = 1.f;
+
+    r.v[1].tx = 0.f;
+    r.v[1].ty = 0.f;
+
+    r.v[2].tx = 1.f;
+    r.v[2].ty = 1.f;
+
+    r.v[3].tx = 1.f;
+    r.v[3].ty = 0.f;
+}
+
+//==========================================================================
+void engine::texture_look_up(rectangle& r)
+{
+    //        if (0.f == r.v[0].ty)
+    //            return;
+
+    r.v[0].tx = 0.f;
+    r.v[0].ty = 0.f;
+
+    r.v[1].tx = 0.f;
+    r.v[1].ty = 1.f;
+
+    r.v[2].tx = 1.f;
+    r.v[2].ty = 0.f;
+
+    r.v[3].tx = 1.f;
+    r.v[3].ty = 1.f;
+}
+
+//==========================================================================
+void engine::texture_look_right_rotate(rectangle& r)
+{
+    //        if (0.f == r.v[0].ty && 1.f == r.v[0].ty && 1.f == r.v[1].tx && 1.f == r.v[1].ty)
+    //            return;
+
+    r.v[0].tx = 0.f;
+    r.v[0].ty = 1.f;
+
+    r.v[1].tx = 1.f;
+    r.v[1].ty = 1.f;
+
+    r.v[2].tx = 0.f;
+    r.v[2].ty = 0.f;
+
+    r.v[3].tx = 1.f;
+    r.v[3].ty = 0.f;
+}
+
+//==========================================================================
+void engine::texture_look_left_rotate(rectangle& r)
+{
+    //        if (1.f == r.v[0].ty && 0.f == r.v[0].ty && 0.f == r.v[1].tx && 0.f == r.v[1].ty)
+    //            return;
+
+    r.v[0].tx = 1.f;
+    r.v[0].ty = 0.f;
+
+    r.v[1].tx = 0.f;
+    r.v[1].ty = 0.f;
+
+    r.v[2].tx = 1.f;
+    r.v[2].ty = 1.f;
+
+    r.v[3].tx = 0.f;
+    r.v[3].ty = 1.f;
 }
 
 //====================================================================================
