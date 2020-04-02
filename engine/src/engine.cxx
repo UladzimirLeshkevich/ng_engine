@@ -301,21 +301,27 @@ void engine::move(float speed, rectangle& geometry, int direction)
         std::cout << "left " << direction << std::endl; // lvi debug
         speed_x = -speed;
         std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
+        // texture_look_left(geometry);                       // lvi test
+        texture_look_left_rotate(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 1:
         std::cout << "right " << direction << std::endl; // lvi debug
         speed_x = speed;
+        // texture_look_right(geometry); // lvi test
+        texture_look_right_rotate(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 2:
         std::cout << "up " << direction << std::endl; // lvi debug
         speed_y = speed;
+        texture_look_up(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 3:
         std::cout << "down " << direction << std::endl; // lvi debug
         speed_y = -speed;
+        texture_look_down(geometry); // lvi test
         trans_matrix(speed_x, speed_y, geometry);
         break;
     case 4:

@@ -69,6 +69,7 @@ int main(int /*argc*/, char* /*argv*/[])
         if (ge.key_W_pressed())
         {
             p.set_direction(up);
+            // ge.invert_texture_by_y_p(p.get_geometry());
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
