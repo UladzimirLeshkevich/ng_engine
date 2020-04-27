@@ -55,6 +55,7 @@ Log& My_Log::operator<<(typelog level)
     // add message to log
     stream_buffer >> logfile.rdbuf();
     stream_buffer.clear();
+    logfile.flush();
     return *this;
 }
 
@@ -84,7 +85,10 @@ void My_Log::close_log()
 }
 
 //==================================================================
-My_Log::~My_Log() { close_log(); }
+My_Log::~My_Log()
+{
+    close_log();
+}
 
 //==================================================================
 std::string My_Log::get_label(typelog type)
@@ -92,21 +96,21 @@ std::string My_Log::get_label(typelog type)
     std::string label;
     switch (type)
     {
-    case DEBUG:
-        label = "<D";
-        break;
-    case INFO:
-        label = "<I";
-        break;
-    case WARNING:
-        label = "<W";
-        break;
-    case SYSTEM_ERROR:
-        label = "<E";
-        break;
-    case CRITICAL:
-        label = "<C";
-        break;
+        case DEBUG:
+            label = "<D";
+            break;
+        case INFO:
+            label = "<I";
+            break;
+        case WARNING:
+            label = "<W";
+            break;
+        case SYSTEM_ERROR:
+            label = "<E";
+            break;
+        case CRITICAL:
+            label = "<C";
+            break;
     }
     return label;
 }

@@ -26,10 +26,10 @@ public:
     ~My_Log();
 
 private:
-    static bool log_opened;
-    std::ofstream logfile;
+    static bool       log_opened;
+    std::ofstream     logfile;
     std::stringstream stream_buffer;
-    time_t rawtime;
-    std::string get_label(typelog type);
-    std::string current_time();
+    time_t            rawtime;
+    std::string       get_label(typelog type);
+    std::string       current_time();
 };
