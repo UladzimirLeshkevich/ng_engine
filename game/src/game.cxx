@@ -1,6 +1,5 @@
 #include "game.hxx"
 #include "engine.hxx"
-#include "game_object.hxx"
 #include <iostream>
 
 int main(int /*argc*/, char* /*argv*/[])

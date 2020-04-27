@@ -9,6 +9,8 @@ add_library(${PROJECT_NAME} SHARED include/engine.hxx
                                    src/timer.cxx
                                    include/animation.hxx
                                    src/animation.cxx
+                                   include/game_object.hxx
+                                   src/game_object.cxx
                                    ../common/geometry.hxx
                                    )
 
