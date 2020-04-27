@@ -91,7 +91,7 @@ public:
     // mooving
     void move(float speed, rectangle& geometry);
 
-    void move(const float speed, rectangle& geometry, const int direction);
+    void move(const float speed, rectangle& geometry, const direction dir);
 
     void rotate(const float value, rectangle& geometry, const int direction);
 

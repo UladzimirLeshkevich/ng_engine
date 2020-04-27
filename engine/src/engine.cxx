@@ -309,21 +309,24 @@ void engine::move(float speed, rectangle& geometry)
 }
 
 //====================================================================================
-void engine::move(const float speed, rectangle& geometry, const int direction)
+void engine::move(const float speed, rectangle& geometry, const direction dir)
 {
     //        left - 0
     //        right - 1
     //        up - 2
     //        down - 3
-    //        rotate - 4
+    //        towards - 4
     //        up_left - 5
-    float speed_x{ 0.f };
-    float speed_y{ 0.f };
-    point tmp;
-    switch (direction)
+    float     speed_x{ 0.f };
+    float     speed_y{ 0.f };
+    point     tmp;
+    float     tmp_dist_x_to_centre;
+    float     tmp_dist_y_to_centre;
+    rectangle tmp_geometry;
+    switch (dir)
     {
         case 0:
-            std::cout << "left " << direction << std::endl; // lvi debug
+            std::cout << "left " << dir << std::endl; // lvi debug
             speed_x = -speed;
             std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
             // texture_look_left(geometry);                       // lvi test
@@ -335,7 +338,7 @@ void engine::move(const float speed, rectangle& geometry, const int direction)
             trans_matrix(speed_x, speed_y, geometry);
             break;
         case 1:
-            std::cout << "right " << direction << std::endl; // lvi debug
+            std::cout << "right " << dir << std::endl; // lvi debug
             speed_x = speed;
             // texture_look_right(geometry); // lvi test
 
@@ -346,26 +349,36 @@ void engine::move(const float speed, rectangle& geometry, const int direction)
             trans_matrix(speed_x, speed_y, geometry);
             break;
         case 2:
-            std::cout << "up " << direction << std::endl; // lvi debug
+            std::cout << "up " << dir << std::endl; // lvi debug
             speed_y = speed;
             texture_look_up(geometry); // lvi test
             trans_matrix(speed_x, speed_y, geometry);
             break;
         case 3:
-            std::cout << "down " << direction << std::endl; // lvi debug
+            std::cout << "down " << dir << std::endl; // lvi debug
             speed_y = -speed;
             texture_look_down(geometry); // lvi test
             trans_matrix(speed_x, speed_y, geometry);
             break;
         case 4:
-            std::cout << "rotate " << direction << std::endl; // lvi debug
-            tmp.x = geometry.v[4].x - 0.0f;
-            tmp.y = geometry.v[4].y - 0.0f;
+            std::cout << "towards " << dir << std::endl; // lvi debug
+
+            tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
+            tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
+            tmp_geometry         = geometry;
+
+            trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre,
+                         tmp_geometry);
+
+            tmp.x = tmp_geometry.v[4].x - 0.0f;
+            tmp.y = tmp_geometry.v[4].y - 0.0f;
+
             normalize_vector(tmp);
+
             trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
             break;
         case 5:
-            std::cout << "up_left " << direction << std::endl; // lvi debug
+            std::cout << "up_left " << dir << std::endl; // lvi debug
             speed_x = -speed;
             speed_y = speed;
             trans_matrix(speed_x, speed_y, geometry);

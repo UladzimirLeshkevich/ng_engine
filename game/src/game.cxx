@@ -59,9 +59,6 @@ int main(int /*argc*/, char* /*argv*/[])
         {
             p.set_direction(left);
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
-            // std::cout << "k_screen=  " << ge.get_k_screen() << std::endl;
-            // logger << ge.key_A_pressed() << "AAA" << DEBUG; //bad, to many
-            // logs per one click...
         }
 
         if (ge.key_S_pressed())
@@ -83,37 +80,28 @@ int main(int /*argc*/, char* /*argv*/[])
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
-        //        if (ge.key_Q_pressed())
-        //        {
-        //            p.set_direction(up_left);
-        //            ge.move(p.get_speed(), p.get_geometry(),
-        //            p.get_direction());
-        //        }
-
         if (ge.key_Q_pressed())
         {
             ge.rotate(0.01f, p2.get_geometry(), CCKW);
-
-            ge.rotate(0.01f, xp_ym.get_geometry(), CCKW);
-            ge.rotate(0.01f, xm_ym.get_geometry(), CCKW);
-            ge.rotate(0.01f, xm_yp.get_geometry(), CCKW);
-            ge.rotate(0.01f, zero.get_geometry(), CCKW);
+            ge.rotate(0.01f, p.get_geometry(), CCKW);
         }
 
         if (ge.key_E_pressed())
         {
             ge.rotate(0.01f, p2.get_geometry(), CKW);
-
-            ge.rotate(0.01f, xp_ym.get_geometry(), CKW);
-            ge.rotate(0.01f, xm_ym.get_geometry(), CKW);
-            ge.rotate(0.01f, xm_yp.get_geometry(), CKW);
-            ge.rotate(0.01f, zero.get_geometry(), CKW);
+            ge.rotate(0.01f, p.get_geometry(), CKW);
         }
 
         if (ge.key_LCTRL_pressed())
         {
             // ge.set_view_mode(front_view);
             ge.switch_view_mode();
+        }
+
+        if (ge.key_SPACE_pressed())
+        {
+            p.set_direction(towards);
+            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
         // ge.render(p.get_geometry());
@@ -129,14 +117,6 @@ int main(int /*argc*/, char* /*argv*/[])
         ge.render(p2.get_geometry(), p2.get_from_sprite(run_number));
 
         ge.render(p.get_geometry(), p.get_texture());
-
-        ge.render(xp_ym.get_geometry());
-        ge.render(xm_yp.get_geometry());
-        ge.render(xm_ym.get_geometry());
-        ge.render(zero.get_geometry());
-        // ge.render(p2.get_geometry(), p2.get_texture());
-
-        ge.render(p3.get_geometry(), p3.get_texture());
 
         ge.swap_buffers();
     }
