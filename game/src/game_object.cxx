@@ -1,7 +1,8 @@
 #include "game_object.hxx"
 
 //==========================================================================
-void person::set_geometry(float center_x, float center_y, float width_x, float height_y)
+void person::set_geometry(float center_x, float center_y, float width_x,
+                          float height_y)
 {
     person_geometry.v[0].x = center_x - (width_x / 2);
     person_geometry.v[0].y = center_y + (height_y / 2);
@@ -86,7 +87,7 @@ float person::get_angle()
 }
 
 //==========================================================================
-void person::add_angle(float angle_increment) //can be negative
+void person::add_angle(float angle_increment) // can be negative
 {
     angle += angle_increment;
 }
@@ -107,6 +108,38 @@ float person::get_scale()
 bool person::get_render_marker()
 {
     return render_this;
+}
+
+//==========================================================================
+void person::set_direction(const direction in_direction)
+{
+    m_direction = in_direction;
+}
+
+//==========================================================================
+void person::set_texture(unsigned int texture_id)
+{
+    person_texture_id = texture_id;
+}
+
+//==========================================================================
+void person::set_texture_to_sprite(unsigned int texture_id)
+{
+    person_sprite.push_back(texture_id);
+}
+
+//==========================================================================
+unsigned int person::get_from_sprite(unsigned int num)
+{
+    unsigned int number;
+    number = person_sprite.at(num);
+    return number;
+}
+
+//==========================================================================
+const std::vector<unsigned int>& person::get_sprite() const
+{
+    return person_sprite;
 }
 
 //==========================================================================
