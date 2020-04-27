@@ -9,8 +9,8 @@ enum direction
     right,
     up,
     down,
-    towards, // lvi need or not ??
-    up_left  // lvi need or not ??
+    toward,
+    backward
 };
 
 class game_object

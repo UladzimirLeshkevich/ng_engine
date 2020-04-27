@@ -93,6 +93,10 @@ public:
 
     void move(const float speed, rectangle& geometry, const direction dir);
 
+    void move_foward(const float speed, rectangle& geometry);
+
+    void move_backward(const float speed, rectangle& geometry);
+
     void rotate(const float value, rectangle& geometry, const int direction);
 
     void normalize_vector(point& v);
@@ -120,6 +124,8 @@ private:
     }
 
     void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
+
+    void move_to_direction(const float speed, rectangle& geometry);
 
     void rotate_matrix(float frotate_angle, rectangle& r);
 

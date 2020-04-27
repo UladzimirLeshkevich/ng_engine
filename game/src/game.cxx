@@ -100,16 +100,19 @@ int main(int /*argc*/, char* /*argv*/[])
 
         if (ge.key_SPACE_pressed())
         {
-            p.set_direction(towards);
-            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+            // p.set_direction(toward);
+            // ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+
+            ge.move_foward(p.get_speed(), p.get_geometry());
         }
 
-        // ge.render(p.get_geometry());
-        // ge.render_textured_rectangle(p.get_geometry(), ); // lvi need debug
-        // here !! ge.render_textured_rectangle(p.get_geometry(),
-        // p.get_texture()); ge.render(tr);
+        if (ge.key_ENTER_pressed())
+        {
+            // p.set_direction(backward);
+            // ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
 
-        // ge.render_triangle(tr);
+            ge.move_backward(p.get_speed(), p.get_geometry());
+        }
 
         //=== animation ===
         run.restart();

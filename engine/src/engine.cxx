@@ -315,14 +315,22 @@ void engine::move(const float speed, rectangle& geometry, const direction dir)
     //        right - 1
     //        up - 2
     //        down - 3
-    //        towards - 4
-    //        up_left - 5
-    float     speed_x{ 0.f };
-    float     speed_y{ 0.f };
-    point     tmp;
-    float     tmp_dist_x_to_centre;
-    float     tmp_dist_y_to_centre;
-    rectangle tmp_geometry;
+    //        toward - 4
+    //        backward - 5
+    float speed_x{ 0.f };
+    float speed_y{ 0.f };
+    point tmp;
+    float tmp_dist_x_to_centre = tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
+    float tmp_dist_y_to_centre = tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
+    rectangle tmp_geometry                            = geometry;
+
+    trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre, tmp_geometry);
+
+    tmp.x = tmp_geometry.v[4].x - 0.0f;
+    tmp.y = tmp_geometry.v[4].y - 0.0f;
+
+    normalize_vector(tmp);
+
     switch (dir)
     {
         case 0:
@@ -361,29 +369,30 @@ void engine::move(const float speed, rectangle& geometry, const direction dir)
             trans_matrix(speed_x, speed_y, geometry);
             break;
         case 4:
-            std::cout << "towards " << dir << std::endl; // lvi debug
-
-            tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
-            tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
-            tmp_geometry         = geometry;
-
-            trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre,
-                         tmp_geometry);
-
-            tmp.x = tmp_geometry.v[4].x - 0.0f;
-            tmp.y = tmp_geometry.v[4].y - 0.0f;
-
-            normalize_vector(tmp);
-
+            std::cout << "toward " << dir << std::endl; // lvi debug
+            texture_look_up(geometry);                  // lvi test
             trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
             break;
         case 5:
-            std::cout << "up_left " << dir << std::endl; // lvi debug
-            speed_x = -speed;
-            speed_y = speed;
-            trans_matrix(speed_x, speed_y, geometry);
+            std::cout << "backward " << dir << std::endl; // lvi debug
+            texture_look_down(geometry);                  // lvi test
+            trans_matrix(-tmp.x * speed, -tmp.y * speed, geometry);
             break;
     }
+}
+
+//====================================================================================
+void engine::move_foward(const float speed, rectangle& geometry)
+{
+    texture_look_up(geometry); // lvi test
+    move_to_direction(speed, geometry);
+}
+
+//====================================================================================
+void engine::move_backward(const float speed, rectangle& geometry)
+{
+    texture_look_down(geometry); // lvi test
+    move_to_direction(-speed, geometry);
 }
 
 //====================================================================================
@@ -472,6 +481,25 @@ void engine::trans_matrix(float fdeltaX, float fdeltaY, rectangle& r)
 
     r.v[5].x = (1 * r.v[5].x + 0 * r.v[5].y + fdeltaX * 1);
     r.v[5].y = (0 * r.v[5].x + 1 * r.v[5].y + fdeltaY * 1);
+}
+
+//====================================================================================
+void engine::move_to_direction(const float speed, rectangle& geometry)
+{
+    point tmp;
+    float tmp_dist_x_to_centre = tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
+    float tmp_dist_y_to_centre = tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
+    rectangle tmp_geometry                            = geometry;
+
+    trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre, tmp_geometry);
+
+    tmp.x = tmp_geometry.v[4].x - 0.0f;
+    tmp.y = tmp_geometry.v[4].y - 0.0f;
+
+    normalize_vector(tmp);
+
+    // texture_look_up(geometry); // lvi test
+    trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
 }
 
 //====================================================================================
