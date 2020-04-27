@@ -18,6 +18,13 @@ int main(int /*argc*/, char* /*argv*/[])
     tr.v[2] = { -0.5f, -0.5f, 1.0f, 1.0f };
 
     person p, p2, p3;
+    person xp_ym, xm_ym, xm_yp, zero;
+
+    xp_ym.set_geometry(0.5f, -0.5f, 0.4f, 0.4f);
+    xm_ym.set_geometry(-0.5f, -0.5f, 0.4f, 0.4f);
+    xm_yp.set_geometry(-0.5f, 0.5f, 0.4f, 0.4f);
+    zero.set_geometry(0.0f, 0.0f, 0.4f, 0.4f);
+
     p.set_geometry(0.f, 0.1f, 0.3f, 0.3f);
     p2.set_geometry(0.5f, 0.5f, 0.4f, 0.4f);
     p3.set_geometry(-0.5f, -0.5f, 0.3f, 0.4f);
@@ -76,10 +83,31 @@ int main(int /*argc*/, char* /*argv*/[])
             ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
         }
 
+        //        if (ge.key_Q_pressed())
+        //        {
+        //            p.set_direction(up_left);
+        //            ge.move(p.get_speed(), p.get_geometry(),
+        //            p.get_direction());
+        //        }
+
         if (ge.key_Q_pressed())
         {
-            p.set_direction(up_left);
-            ge.move(p.get_speed(), p.get_geometry(), p.get_direction());
+            ge.rotate(0.01f, p2.get_geometry(), CCKW);
+
+            ge.rotate(0.01f, xp_ym.get_geometry(), CCKW);
+            ge.rotate(0.01f, xm_ym.get_geometry(), CCKW);
+            ge.rotate(0.01f, xm_yp.get_geometry(), CCKW);
+            ge.rotate(0.01f, zero.get_geometry(), CCKW);
+        }
+
+        if (ge.key_E_pressed())
+        {
+            ge.rotate(0.01f, p2.get_geometry(), CKW);
+
+            ge.rotate(0.01f, xp_ym.get_geometry(), CKW);
+            ge.rotate(0.01f, xm_ym.get_geometry(), CKW);
+            ge.rotate(0.01f, xm_yp.get_geometry(), CKW);
+            ge.rotate(0.01f, zero.get_geometry(), CKW);
         }
 
         if (ge.key_LCTRL_pressed())
@@ -101,6 +129,11 @@ int main(int /*argc*/, char* /*argv*/[])
         ge.render(p2.get_geometry(), p2.get_from_sprite(run_number));
 
         ge.render(p.get_geometry(), p.get_texture());
+
+        ge.render(xp_ym.get_geometry());
+        ge.render(xm_yp.get_geometry());
+        ge.render(xm_ym.get_geometry());
+        ge.render(zero.get_geometry());
         // ge.render(p2.get_geometry(), p2.get_texture());
 
         ge.render(p3.get_geometry(), p3.get_texture());

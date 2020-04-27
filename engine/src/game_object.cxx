@@ -63,6 +63,12 @@ rectangle& person::get_geometry()
 }
 
 //==========================================================================
+rectangle person::get_geometry_copy()
+{
+    return person_geometry;
+}
+
+//==========================================================================
 void person::set_speed(float in_speed)
 {
     speed = in_speed;

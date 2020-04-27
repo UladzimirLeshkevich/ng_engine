@@ -50,6 +50,10 @@ const std::string WINDOW_MODE     = "Window mode";
 const std::string top_view{ "top_view" };
 const std::string front_view{ "front_view" };
 
+// rotation direction
+#define CKW -1 // clockwise
+#define CCKW 1 // contraclockwise
+
 class engine
 {
 public:
@@ -87,10 +91,11 @@ public:
     // mooving
     void move(float speed, rectangle& geometry);
 
-    void move(float speed, rectangle& geometry, int direction);
+    void move(const float speed, rectangle& geometry, const int direction);
+
+    void rotate(const float value, rectangle& geometry, const int direction);
 
     void normalize_vector(point& v);
-    void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
 
     // textures
     GLuint load_image(std::string filename);
@@ -109,9 +114,14 @@ private:
         input.v[1].x = input.v[1].x * k_screen;
         input.v[2].x = input.v[2].x * k_screen;
         input.v[3].x = input.v[3].x * k_screen;
+        // input.v[4].x = input.v[4].x * k_screen; // lvi ??
 
         return input;
     }
+
+    void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
+
+    void rotate_matrix(float frotate_angle, rectangle& r);
 
     const static std::string system_name;
     std::shared_ptr<Log>     logger;

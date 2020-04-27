@@ -27,6 +27,8 @@ public:
 
     rectangle& get_geometry();
 
+    rectangle get_geometry_copy();
+
     void  set_health(float value);
     void  make_damage(float value);
     float get_health();

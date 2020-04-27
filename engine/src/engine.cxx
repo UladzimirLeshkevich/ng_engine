@@ -1,54 +1,57 @@
 #include "engine.hxx"
 
 //==========================================================================
-const std::string engine::system_name{"engine_sys"};
+const std::string engine::system_name{ "engine_sys" };
 
 //==========================================================================
-PFNGLCREATESHADERPROC glCreateShader = nullptr;
-PFNGLSHADERSOURCEPROC glShaderSource = nullptr;
-PFNGLCOMPILESHADERPROC glCompileShader = nullptr;
-PFNGLGETSHADERIVPROC glGetShaderiv = nullptr;
-PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = nullptr;
-PFNGLDELETESHADERPROC glDeleteShader = nullptr;
-PFNGLCREATEPROGRAMPROC glCreateProgram = nullptr;
-PFNGLATTACHSHADERPROC glAttachShader = nullptr;
-PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation = nullptr;
-PFNGLLINKPROGRAMPROC glLinkProgram = nullptr;
-PFNGLGETPROGRAMIVPROC glGetProgramiv = nullptr;
-PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = nullptr;
-PFNGLDELETEPROGRAMPROC glDeleteProgram = nullptr;
-PFNGLUSEPROGRAMPROC glUseProgram = nullptr;
-PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = nullptr;
-PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = nullptr;
-PFNGLVALIDATEPROGRAMPROC glValidateProgram = nullptr;
-PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = nullptr;
-PFNGLUNIFORM1IPROC glUniform1i = nullptr;
-PFNGLACTIVETEXTUREPROC glActiveTexture_ = nullptr;
-PFNGLUNIFORM4FVPROC glUniform4fv = nullptr;
+PFNGLCREATESHADERPROC             glCreateShader             = nullptr;
+PFNGLSHADERSOURCEPROC             glShaderSource             = nullptr;
+PFNGLCOMPILESHADERPROC            glCompileShader            = nullptr;
+PFNGLGETSHADERIVPROC              glGetShaderiv              = nullptr;
+PFNGLGETSHADERINFOLOGPROC         glGetShaderInfoLog         = nullptr;
+PFNGLDELETESHADERPROC             glDeleteShader             = nullptr;
+PFNGLCREATEPROGRAMPROC            glCreateProgram            = nullptr;
+PFNGLATTACHSHADERPROC             glAttachShader             = nullptr;
+PFNGLBINDATTRIBLOCATIONPROC       glBindAttribLocation       = nullptr;
+PFNGLLINKPROGRAMPROC              glLinkProgram              = nullptr;
+PFNGLGETPROGRAMIVPROC             glGetProgramiv             = nullptr;
+PFNGLGETPROGRAMINFOLOGPROC        glGetProgramInfoLog        = nullptr;
+PFNGLDELETEPROGRAMPROC            glDeleteProgram            = nullptr;
+PFNGLUSEPROGRAMPROC               glUseProgram               = nullptr;
+PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      = nullptr;
+PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  = nullptr;
+PFNGLVALIDATEPROGRAMPROC          glValidateProgram          = nullptr;
+PFNGLGETUNIFORMLOCATIONPROC       glGetUniformLocation       = nullptr;
+PFNGLUNIFORM1IPROC                glUniform1i                = nullptr;
+PFNGLACTIVETEXTUREPROC            glActiveTexture_           = nullptr;
+PFNGLUNIFORM4FVPROC               glUniform4fv               = nullptr;
 PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = nullptr;
 
 //====================================================================================
-engine::engine() : logger(LogManager::get_logger(system_name)), view_mode(front_view)
+engine::engine()
+    : logger(LogManager::get_logger(system_name))
+    , view_mode(front_view)
 {
     initialize();
 }
 
 //====================================================================================
-engine::engine(const std::string& in_screen_mode_type,
-               const float& in_width,
-               const float& in_height) : logger(LogManager::get_logger(system_name)),
-                                         width(in_width),
-                                         height(in_height),
-                                         k_screen((in_height / in_width)),
-                                         screen_mode_type(in_screen_mode_type),
-                                         view_mode(top_view)
+engine::engine(const std::string& in_screen_mode_type, const float& in_width,
+               const float& in_height)
+    : logger(LogManager::get_logger(system_name))
+    , width(in_width)
+    , height(in_height)
+    , k_screen((in_height / in_width))
+    , screen_mode_type(in_screen_mode_type)
+    , view_mode(top_view)
 {
     logger->open_logfile("log.txt");
 
     if (!initialize(screen_mode_type, width, height))
     {
         std::cerr << "Application will be closed  \n!!";
-        logger << "Engine is not initialized. Application will be closed" << SYSTEM_ERROR;
+        logger << "Engine is not initialized. Application will be closed"
+               << SYSTEM_ERROR;
         logger->close_log();
         SDL_Quit();
         std::exit(1);
@@ -87,74 +90,74 @@ bool engine::events()
     {
         switch (test_event.key.keysym.sym)
         {
-        case SDLK_w:
-            key_W_flag = true;
-            break;
-        case SDLK_s:
-            key_S_flag = true;
-            break;
-        case SDLK_a:
-            key_A_flag = true;
-            break;
-        case SDLK_d:
-            key_D_flag = true;
-            break;
-        case SDLK_LCTRL:
-            key_LCTRL_flag = true;
-            break;
-        case SDLK_SPACE:
-            key_SPACE_flag = true;
-            break;
-        case SDLK_RETURN:
-            key_ENTER_flag = true;
-            break;
-        case SDLK_ESCAPE:
-            key_Esc_flag = true;
-            logger << "ESCAPE was pressed" << INFO;
-            return false;
-        case SDLK_q:
-            key_Q_flag = true;
-            break;
-        case SDLK_e:
-            key_E_flag = true;
-            break;
-        default:
-            break;
+            case SDLK_w:
+                key_W_flag = true;
+                break;
+            case SDLK_s:
+                key_S_flag = true;
+                break;
+            case SDLK_a:
+                key_A_flag = true;
+                break;
+            case SDLK_d:
+                key_D_flag = true;
+                break;
+            case SDLK_LCTRL:
+                key_LCTRL_flag = true;
+                break;
+            case SDLK_SPACE:
+                key_SPACE_flag = true;
+                break;
+            case SDLK_RETURN:
+                key_ENTER_flag = true;
+                break;
+            case SDLK_ESCAPE:
+                key_Esc_flag = true;
+                logger << "ESCAPE was pressed" << INFO;
+                return false;
+            case SDLK_q:
+                key_Q_flag = true;
+                break;
+            case SDLK_e:
+                key_E_flag = true;
+                break;
+            default:
+                break;
         }
     }
     else if (test_event.type == SDL_KEYUP)
     {
         switch (test_event.key.keysym.sym)
         {
-        case SDLK_w:
-            key_W_flag = false;
-            break;
-        case SDLK_s:
-            key_S_flag = false;
-            break;
-        case SDLK_a:
-            key_A_flag = false;
-            break;
-        case SDLK_d:
-            key_D_flag = false;
-            break;
-        case SDLK_LCTRL:
-            key_LCTRL_flag = false;
-            break;
-        case SDLK_SPACE:
-            key_SPACE_flag = false;
-            break;
-        case SDLK_RETURN:
-            key_ENTER_flag = false;
-            break;
-        case SDLK_q:
-            key_Q_flag = false;
-            break;
-        case SDLK_e:
-            key_E_flag = false;
-            break;
-        default:
-            break;
+            case SDLK_w:
+                key_W_flag = false;
+                break;
+            case SDLK_s:
+                key_S_flag = false;
+                break;
+            case SDLK_a:
+                key_A_flag = false;
+                break;
+            case SDLK_d:
+                key_D_flag = false;
+                break;
+            case SDLK_LCTRL:
+                key_LCTRL_flag = false;
+                break;
+            case SDLK_SPACE:
+                key_SPACE_flag = false;
+                break;
+            case SDLK_RETURN:
+                key_ENTER_flag = false;
+                break;
+            case SDLK_q:
+                key_Q_flag = false;
+                break;
+            case SDLK_e:
+                key_E_flag = false;
+                break;
+            default:
+                break;
         }
     }
     //===== mouse ====
@@ -207,7 +210,9 @@ void engine::set_view_mode(const std::string& in_mode)
 {
     if (top_view != in_mode && front_view != in_mode)
     {
-        logger << LOGFUNCLINE << "invalid in_mode value, using current value == " << view_mode << SYSTEM_ERROR;
+        logger << LOGFUNCLINE
+               << "invalid in_mode value, using current value == " << view_mode
+               << SYSTEM_ERROR;
         return;
     }
     view_mode = in_mode;
@@ -304,7 +309,7 @@ void engine::move(float speed, rectangle& geometry)
 }
 
 //====================================================================================
-void engine::move(float speed, rectangle& geometry, int direction)
+void engine::move(const float speed, rectangle& geometry, const int direction)
 {
     //        left - 0
     //        right - 1
@@ -312,58 +317,72 @@ void engine::move(float speed, rectangle& geometry, int direction)
     //        down - 3
     //        rotate - 4
     //        up_left - 5
-    float speed_x{0.f};
-    float speed_y{0.f};
+    float speed_x{ 0.f };
+    float speed_y{ 0.f };
     point tmp;
     switch (direction)
     {
-    case 0:
-        std::cout << "left " << direction << std::endl; // lvi debug
-        speed_x = -speed;
-        std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
-        // texture_look_left(geometry);                       // lvi test
+        case 0:
+            std::cout << "left " << direction << std::endl; // lvi debug
+            speed_x = -speed;
+            std::cout << "speed_x = " << speed_x << std::endl; // lvi debug
+            // texture_look_left(geometry);                       // lvi test
 
-        (top_view == view_mode) ? texture_look_left_rotate(geometry) : texture_look_left(geometry); // lvi test
+            (top_view == view_mode) ? texture_look_left_rotate(geometry)
+                                    : texture_look_left(geometry); // lvi test
 
-        // texture_look_left_rotate(geometry); // lvi test
-        trans_matrix(speed_x, speed_y, geometry);
-        break;
-    case 1:
-        std::cout << "right " << direction << std::endl; // lvi debug
-        speed_x = speed;
-        // texture_look_right(geometry); // lvi test
+            // texture_look_left_rotate(geometry); // lvi test
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 1:
+            std::cout << "right " << direction << std::endl; // lvi debug
+            speed_x = speed;
+            // texture_look_right(geometry); // lvi test
 
-        (top_view == view_mode) ? texture_look_right_rotate(geometry) : texture_look_right(geometry); // lvi test
+            (top_view == view_mode) ? texture_look_right_rotate(geometry)
+                                    : texture_look_right(geometry); // lvi test
 
-        // texture_look_right_rotate(geometry); // lvi test
-        trans_matrix(speed_x, speed_y, geometry);
-        break;
-    case 2:
-        std::cout << "up " << direction << std::endl; // lvi debug
-        speed_y = speed;
-        texture_look_up(geometry); // lvi test
-        trans_matrix(speed_x, speed_y, geometry);
-        break;
-    case 3:
-        std::cout << "down " << direction << std::endl; // lvi debug
-        speed_y = -speed;
-        texture_look_down(geometry); // lvi test
-        trans_matrix(speed_x, speed_y, geometry);
-        break;
-    case 4:
-        std::cout << "rotate " << direction << std::endl; // lvi debug
-        tmp.x = geometry.v[4].x - 0.0f;
-        tmp.y = geometry.v[4].y - 0.0f;
-        normalize_vector(tmp);
-        trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
-        break;
-    case 5:
-        std::cout << "up_left " << direction << std::endl; // lvi debug
-        speed_x = -speed;
-        speed_y = speed;
-        trans_matrix(speed_x, speed_y, geometry);
-        break;
+            // texture_look_right_rotate(geometry); // lvi test
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 2:
+            std::cout << "up " << direction << std::endl; // lvi debug
+            speed_y = speed;
+            texture_look_up(geometry); // lvi test
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 3:
+            std::cout << "down " << direction << std::endl; // lvi debug
+            speed_y = -speed;
+            texture_look_down(geometry); // lvi test
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
+        case 4:
+            std::cout << "rotate " << direction << std::endl; // lvi debug
+            tmp.x = geometry.v[4].x - 0.0f;
+            tmp.y = geometry.v[4].y - 0.0f;
+            normalize_vector(tmp);
+            trans_matrix(tmp.x * speed, tmp.y * speed, geometry);
+            break;
+        case 5:
+            std::cout << "up_left " << direction << std::endl; // lvi debug
+            speed_x = -speed;
+            speed_y = speed;
+            trans_matrix(speed_x, speed_y, geometry);
+            break;
     }
+}
+
+//====================================================================================
+void engine::rotate(const float value, rectangle& geometry, const int direction)
+{
+    // calculating distand to the centre and move to the centre and back
+    float const tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
+    float const tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
+
+    trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre, geometry);
+    rotate_matrix(value * direction, geometry);
+    trans_matrix(-tmp_dist_x_to_centre, -tmp_dist_y_to_centre, geometry);
 }
 
 //====================================================================================
@@ -372,8 +391,52 @@ void engine::normalize_vector(point& v)
     point tmp;
     tmp.x = v.x / sqrt(v.x * v.x + v.y * v.y);
     tmp.y = v.y / sqrt(v.x * v.x + v.y * v.y);
-    v.x = tmp.x;
-    v.y = tmp.y;
+    v.x   = tmp.x;
+    v.y   = tmp.y;
+}
+
+//====================================================================================
+void engine::rotate_matrix(float frotate_angle, rectangle& r)
+{
+    float x0 = r.v[0].x;
+    float y0 = r.v[0].y;
+
+    float x1 = r.v[1].x;
+    float y1 = r.v[1].y;
+
+    float x2 = r.v[2].x;
+    float y2 = r.v[2].y;
+
+    float x3 = r.v[3].x;
+    float y3 = r.v[3].y;
+
+    float x4 = r.v[4].x;
+    float y4 = r.v[4].y;
+
+    r.v[0].x = (cos(frotate_angle * pi / 180) * x0 -
+                sin(frotate_angle * pi / 180) * y0 + 0 * 1);
+    r.v[0].y = (sin(frotate_angle * pi / 180) * x0 +
+                cos(frotate_angle * pi / 180) * y0 + 0 * 1);
+
+    r.v[1].x = (cos(frotate_angle * pi / 180) * x1 -
+                sin(frotate_angle * pi / 180) * y1 + 0 * 1);
+    r.v[1].y = (sin(frotate_angle * pi / 180) * x1 +
+                cos(frotate_angle * pi / 180) * y1 + 0 * 1);
+
+    r.v[2].x = (cos(frotate_angle * pi / 180) * x2 -
+                sin(frotate_angle * pi / 180) * y2 + 0 * 1);
+    r.v[2].y = (sin(frotate_angle * pi / 180) * x2 +
+                cos(frotate_angle * pi / 180) * y2 + 0 * 1);
+
+    r.v[3].x = (cos(frotate_angle * pi / 180) * x3 -
+                sin(frotate_angle * pi / 180) * y3 + 0 * 1);
+    r.v[3].y = (sin(frotate_angle * pi / 180) * x3 +
+                cos(frotate_angle * pi / 180) * y3 + 0 * 1);
+
+    r.v[4].x = (cos(frotate_angle * pi / 180) * x4 -
+                sin(frotate_angle * pi / 180) * y4 + 0 * 1);
+    r.v[4].y = (sin(frotate_angle * pi / 180) * x4 +
+                cos(frotate_angle * pi / 180) * y4 + 0 * 1);
 }
 
 //====================================================================================
@@ -401,9 +464,9 @@ void engine::trans_matrix(float fdeltaX, float fdeltaY, rectangle& r)
 //====================================================================================
 GLuint engine::load_image(std::string filename)
 {
-    std::string image_parth_and_name = resources + filename;
-    const char* file = image_parth_and_name.data();
-    SDL_Surface* img = IMG_Load(file);
+    std::string  image_parth_and_name = resources + filename;
+    const char*  file                 = image_parth_and_name.data();
+    SDL_Surface* img                  = IMG_Load(file);
 
     if (!img)
     {
@@ -423,7 +486,7 @@ GLuint engine::load_image(std::string filename)
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
     GLint mipmap_level = 0;
-    GLint border = 0;
+    GLint border       = 0;
     glTexImage2D(GL_TEXTURE_2D, mipmap_level, GL_RGBA, img->w, img->h, border,
                  GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -582,7 +645,8 @@ void engine::texture_look_up(rectangle& r)
 //==========================================================================
 void engine::texture_look_right_rotate(rectangle& r)
 {
-    //        if (0.f == r.v[0].ty && 1.f == r.v[0].ty && 1.f == r.v[1].tx && 1.f == r.v[1].ty)
+    //        if (0.f == r.v[0].ty && 1.f == r.v[0].ty && 1.f == r.v[1].tx
+    //        && 1.f == r.v[1].ty)
     //            return;
 
     r.v[0].tx = 0.f;
@@ -601,7 +665,8 @@ void engine::texture_look_right_rotate(rectangle& r)
 //==========================================================================
 void engine::texture_look_left_rotate(rectangle& r)
 {
-    //        if (1.f == r.v[0].ty && 0.f == r.v[0].ty && 0.f == r.v[1].tx && 0.f == r.v[1].ty)
+    //        if (1.f == r.v[0].ty && 0.f == r.v[0].ty && 0.f == r.v[1].tx &&
+    //        0.f == r.v[1].ty)
     //            return;
 
     r.v[0].tx = 1.f;
@@ -643,19 +708,22 @@ bool engine::initialize()
 }
 
 //====================================================================================
-bool engine::initialize(const std::string& screen_mode_type, const float& in_width, const float& in_height)
+bool engine::initialize(const std::string& screen_mode_type,
+                        const float& in_width, const float& in_height)
 {
     if (screen_mode_type != FULL_SCREEN && screen_mode_type != WINDOW_MODE)
     {
         std::cerr << "screen_mode_type must be FULL_SCREEN or WINDOW_MODE\n";
-        logger << "screen_mode_type must be FULL_SCREEN or WINDOW_MODE" << SYSTEM_ERROR;
+        logger << "screen_mode_type must be FULL_SCREEN or WINDOW_MODE"
+               << SYSTEM_ERROR;
         return false;
     }
 
     if ((SDL_Init(SDL_INIT_EVERYTHING)) != 0)
     {
         const char* err_message = SDL_GetError();
-        std::cerr << "error: failed call SDL_Init: " << err_message << std::endl;
+        std::cerr << "error: failed call SDL_Init: " << err_message
+                  << std::endl;
         logger << "Failed call SDL_Init(): " << err_message << SYSTEM_ERROR;
         return false;
     }
@@ -705,7 +773,8 @@ bool engine::initialize(const std::string& screen_mode_type, const float& in_wid
 
     old_create_shader();
 
-    logger << "Engine successful initialized with window " << in_width << "x" << in_height << " in " << screen_mode_type << INFO;
+    logger << "Engine successful initialized with window " << in_width << "x"
+           << in_height << " in " << screen_mode_type << INFO;
     return true;
 }
 
@@ -714,7 +783,7 @@ template <typename T>
 void engine::load_gl_func(const char* func_name, T& result)
 {
     void* gl_pointer = SDL_GL_GetProcAddress(func_name);
-    result = reinterpret_cast<T>(gl_pointer);
+    result           = reinterpret_cast<T>(gl_pointer);
     if (nullptr == gl_pointer)
     {
         logger << "Can't load GL function" << func_name << SYSTEM_ERROR;
