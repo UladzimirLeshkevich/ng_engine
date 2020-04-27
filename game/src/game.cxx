@@ -30,7 +30,7 @@ int main(int /*argc*/, char* /*argv*/[])
     p2.set_texture_to_sprite(ge.load_image("robot_1.png"));
 
     p3.set_texture(ge.load_image("krita1.png"));
-    // p3.set_texture_to_sprite(ge.load_image("an1.png"));
+    p3.set_texture_to_sprite(ge.load_image("an1.png"));
     // p3.set_texture_to_sprite(ge.load_image("an2.png"));
     // p3.set_texture_to_sprite(ge.load_image("an3.png"));
 
