@@ -1,6 +1,15 @@
 #include "game.hxx"
 #include "engine.hxx"
 #include <iostream>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+#include <cstdlib>
+
+#include <chrono>
+#include <thread>
 
 int main(int /*argc*/, char* /*argv*/[])
 {
@@ -8,7 +17,7 @@ int main(int /*argc*/, char* /*argv*/[])
     const std::string    sA = "main_sys";
     std::shared_ptr<Log> logger{ LogManager::get_logger(sA) };
     // logger->open_logfile("log.txt");
-    logger << 100 << " jasjdfad " << INFO;
+    logger << 100 << " test log from game " << INFO;
     std::cout << "!!!!!!!!!!!!!!!!!!!" << std::endl;
 
     triangle tr;
@@ -28,7 +37,7 @@ int main(int /*argc*/, char* /*argv*/[])
     p.set_geometry(0.f, 0.1f, 0.3f, 0.3f);
     p2.set_geometry(0.5f, 0.5f, 0.4f, 0.4f);
     p3.set_geometry(-0.5f, -0.5f, 0.3f, 0.4f);
-    p.set_speed(0.001f);
+    p.set_speed(0.1f / 60.f);
     p.set_texture(ge.load_image("panzer_base.png"));
     // p2.set_texture(ge.load_image("robot_2.png"));
 
@@ -48,9 +57,39 @@ int main(int /*argc*/, char* /*argv*/[])
     timer ani_timer;
     float delta_time = 0.f;
 
+    // frame timer
+
+    timer frame_timer;
+    float frame_time = 0.f;
+
+    //===============================================================
+    // OM
+    using clock_timer = std::chrono::high_resolution_clock;
+    using nano_sec    = std::chrono::nanoseconds;
+    using milli_sec   = std::chrono::milliseconds;
+    using time_point  = std::chrono::time_point<clock_timer, nano_sec>;
+    clock_timer timer;
+    time_point  start = timer.now();
+    //===============================================================
+
     while (loop)
     {
         loop = ge.events();
+
+        time_point end_last_frame = timer.now(); // OM
+
+        //==================================================
+        // OM
+        milli_sec frame_delta =
+            std::chrono::duration_cast<milli_sec>(end_last_frame - start);
+
+        // std::cout << "frame_delta = " << frame_delta << std::endl;
+
+        if (frame_delta.count() < 16.666) // 1000 % 60 = 16.666 FPS
+        {
+            std::this_thread::yield(); // too fast, give other apps CPU time
+            continue;                  // wait till more time
+        }
 
         //============ TIMERS ====================
         delta_time = ani_timer.elapsed();
@@ -82,14 +121,14 @@ int main(int /*argc*/, char* /*argv*/[])
 
         if (ge.key_Q_pressed())
         {
-            ge.rotate(0.01f, p2.get_geometry(), CCKW);
-            ge.rotate(0.01f, p.get_geometry(), CCKW);
+            ge.rotate(0.1f, p2.get_geometry(), CCKW);
+            ge.rotate(0.1f, p.get_geometry(), CCKW);
         }
 
         if (ge.key_E_pressed())
         {
-            ge.rotate(0.01f, p2.get_geometry(), CKW);
-            ge.rotate(0.01f, p.get_geometry(), CKW);
+            ge.rotate(0.1f, p2.get_geometry(), CKW);
+            ge.rotate(0.1f, p.get_geometry(), CKW);
         }
 
         if (ge.key_LCTRL_pressed())
@@ -121,7 +160,29 @@ int main(int /*argc*/, char* /*argv*/[])
 
         ge.render(p.get_geometry(), p.get_texture());
 
+        //==================================================
+        frame_time = frame_timer.elapsed();
+
+        time_t timeStamp = std::chrono::system_clock::to_time_t(
+            std::chrono::system_clock::now());
+        std::cout << std::ctime(&timeStamp) << std::endl;
+
+        std::cout << frame_time << std::endl;
+
+        //        if (frame_time * 1000.f < 16.666)
+        //        {
+        //            std::cout << 16 - frame_time * 1000.f << std::endl;
+        //            Sleep(16.666 - frame_time * 1000.f);
+
+        //            // std::this_thread::yield(); // too fast, give other apps
+        //            CPU time continue;
+        //        }
+
         ge.swap_buffers();
+
+        start = end_last_frame; // OM
+
+        frame_timer.reset();
     }
 
     // logger->close_log();
