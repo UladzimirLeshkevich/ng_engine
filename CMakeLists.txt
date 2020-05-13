@@ -6,4 +6,6 @@ add_subdirectory(engine)
 add_subdirectory(game)
 
 file(GLOB resources "res/*")
-file(COPY ${resources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../build/res)
+#file(COPY ${resources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../build/res)
+
+file(COPY ${resources} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../build/res)
