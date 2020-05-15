@@ -79,7 +79,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
             //std::this_thread::sleep_for( std::chrono::milliseconds(frame_timer.calc_delta_time_duration()) ); // GPU 5 %   CPU=0%  bad move
 
-            //std::this_thread::sleep_for( std::chrono::milliseconds(1) ); // GPU 5 %   CPU=0%  bad move?
+            //uint32_t to_sleep = 16.666 - frame_delta_time;
+            //std::this_thread::sleep_for( std::chrono::milliseconds(to_sleep) ); // GPU 5 %   CPU=2%  bad move?
 
             continue;
         }
