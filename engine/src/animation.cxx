@@ -29,7 +29,7 @@ int animation::current_frame_number(float delta_time)
 {
     current_time += delta_time;
 
-    float one_frame_delta = 1.f / fps;
+    float one_frame_delta = 1000.f / fps; // float one_frame_delta = 1.f / fps;
 
     size_t how_may_frames_from_start =
         static_cast<size_t>(current_time / one_frame_delta);
