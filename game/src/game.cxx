@@ -57,18 +57,18 @@ int main(int /*argc*/, char* /*argv*/[])
     int   run_number = 0;
 
     // frame timer
-    float frame_delta_time{0};              //
-    timer frame_timer;                      //
-    frame_timer.set_start_point();          //  
+    float frame_delta_time{0};          //
+    timer frame_timer;                  //
+    frame_timer.start_timer();          //   
 
     while (loop)
     {
         loop = ge.events();
 
-        //============ TIMERS ====================
-        frame_timer.set_frame_start_point(); 
+        //============ TIMERS ==================== 
+        frame_timer.frame_begin(); 
 
-        frame_delta_time = frame_timer.calc_delta_time(); // !!
+        frame_delta_time = frame_timer.get_delta_time(); // !!
 
         //if (frame_timer.calc_delta_time_duration().count() < 16.666)          // 1000 % 60 = 16.666 FPS
         if (frame_delta_time < 16.666)          // 1000 % 60 = 16.666 FPS
@@ -159,7 +159,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
         ge.swap_buffers();
 
-        frame_timer.update_start_point();
+        frame_timer.frame_end();
     }
 
     return EXIT_SUCCESS;

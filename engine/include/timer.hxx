@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿//#pragma once
 #include <chrono>
 
 class timer
@@ -7,28 +7,25 @@ public:
     timer();
     void   reset();
     double elapsed() const;
-
-
-void set_start_point()
+//=======================================================
+void start_timer()
 {
     start = clock_t::now();
 }
 
-void set_frame_start_point()
+void frame_begin()
 {
     end_last_frame = clock_t::now();
 }
 
-void update_start_point()
+void frame_end()
 {
     start = end_last_frame;
 }
 
-float calc_delta_time()
+float get_delta_time()
 {
     return  (std::chrono::duration_cast<milli_sec>(end_last_frame - start)).count();
-    //return frame_delta.count();
-    //return std::chrono::duration_cast<second_f>(end_last_frame - start).count();
 } 
 
 std::chrono::milliseconds calc_delta_time_duration()
@@ -44,11 +41,6 @@ private:
     using second_f = std::chrono::duration<float, std::ratio<1>>;
 
     std::chrono::time_point<clock_t> m_beg;
-
-
-
-    //std::chrono::time_point<clock_t> start;
-    //std::chrono::time_point<clock_t> end_last_frame;
 
     // from OM
     using clock_timer = std::chrono::high_resolution_clock;
