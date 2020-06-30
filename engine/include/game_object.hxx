@@ -69,6 +69,32 @@ public:
 
     const std::vector<unsigned int>& get_sprite() const;
 
+    bool on_the_left_limit() const 
+    { 
+        std::cout <<"!!! left_limit_coordinate = " << left_limit_coordinate <<std::endl;
+        std::cout <<"!!! person_geometry.v[0].x = " << person_geometry.v[0].x <<std::endl;
+
+        return ( person_geometry.v[0].x <= left_limit_coordinate); 
+    }
+
+    bool on_the_right_limit() const 
+    { 
+    // TODO add logger HERE !!
+    // logger << LOGFUNCLINE<< "invalid in_mode value, using current value == " << SYSTEM_ERROR; 
+    std::cout <<"right_limit_coordinate = " << right_limit_coordinate <<std::endl;
+    std::cout <<"person_geometry.v[2].x = " << person_geometry.v[2].x <<std::endl;
+
+        return (person_geometry.v[2].x >= right_limit_coordinate);  
+    }
+
+    void set_left_limit_coordinate(float ll){left_limit_coordinate = ll;}
+
+    float get_left_limit_coordinate() const {return left_limit_coordinate;}
+
+    void set_right_limit_coordinate(float rl){right_limit_coordinate = rl;}
+
+    float get_right_limit_coordinate() const {return right_limit_coordinate;}
+
 private:
     direction m_direction;
     rectangle person_geometry;
@@ -81,4 +107,8 @@ private:
     // textures
     unsigned int              person_texture_id;
     std::vector<unsigned int> person_sprite;
+
+    float left_limit_coordinate{-1000.f};
+    float right_limit_coordinate{1000.f};
+
 };
