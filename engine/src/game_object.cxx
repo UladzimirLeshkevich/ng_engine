@@ -1,4 +1,18 @@
 #include "game_object.hxx"
+#include <string>
+
+//==========================================================================
+const std::string person::system_name{"person_sys"};
+
+long long int person::global_personID_counter{0};
+
+//==========================================================================
+
+person::person() : logger(LogManager::get_logger(system_name))
+{
+    personID = ++global_personID_counter;
+    logger << "person with ID = " << std::to_string(personID) << " created" << INFO;
+}
 
 //==========================================================================
 void person::set_geometry(float center_x, float center_y, float width_x,
@@ -57,7 +71,7 @@ float person::get_health()
 }
 
 //==========================================================================
-rectangle& person::get_geometry()
+rectangle &person::get_geometry()
 {
     return person_geometry;
 }
@@ -143,7 +157,7 @@ unsigned int person::get_from_sprite(unsigned int num)
 }
 
 //==========================================================================
-const std::vector<unsigned int>& person::get_sprite() const
+const std::vector<unsigned int> &person::get_sprite() const
 {
     return person_sprite;
 }
