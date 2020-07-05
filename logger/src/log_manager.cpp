@@ -1,8 +1,10 @@
 #include "log_manager.h"
 
 //==================================================================
-std::shared_ptr<Log> LogManager::get_logger(const std::string& system_name)
+std::shared_ptr<Log> LogManager::get_logger(const std::string &system_name)
 {
+    std::cout << "LogManager::get_logger" << std::endl; // DBG
+
     auto it = loggerMap.find(system_name);
     if (it != loggerMap.end())
     {
@@ -18,5 +20,5 @@ std::shared_ptr<Log> LogManager::get_logger(const std::string& system_name)
 
 //==================================================================
 std::shared_ptr<Log> LogManager::logger = nullptr;
-My_Log* LogManager::my_logger = new My_Log;
+My_Log *LogManager::my_logger = new My_Log;
 std::map<const std::string, std::shared_ptr<Log>> LogManager::loggerMap;

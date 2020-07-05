@@ -11,6 +11,8 @@ add_library(${PROJECT_NAME} SHARED include/log.h
                                    src/decorator.cpp
                                    src/my_log.cpp
                                    src/log_manager.cpp
+                                   include/logfile_handler.h
+                                   src/logfile_handler.cpp
                                    )
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
