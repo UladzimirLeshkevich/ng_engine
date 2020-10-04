@@ -19,36 +19,36 @@
 #define LOGFILELINE __FILE__ << ":" << __LINE__
 #define LOGFUNCLINE __FUNCTION__ << ":" << __LINE__
 
-extern PFNGLCREATESHADERPROC             glCreateShader;
-extern PFNGLSHADERSOURCEPROC             glShaderSource;
-extern PFNGLCOMPILESHADERPROC            glCompileShader;
-extern PFNGLGETSHADERIVPROC              glGetShaderiv;
-extern PFNGLGETSHADERINFOLOGPROC         glGetShaderInfoLog;
-extern PFNGLDELETESHADERPROC             glDeleteShader;
-extern PFNGLCREATEPROGRAMPROC            glCreateProgram;
-extern PFNGLATTACHSHADERPROC             glAttachShader;
-extern PFNGLBINDATTRIBLOCATIONPROC       glBindAttribLocation;
-extern PFNGLLINKPROGRAMPROC              glLinkProgram;
-extern PFNGLGETPROGRAMIVPROC             glGetProgramiv;
-extern PFNGLGETPROGRAMINFOLOGPROC        glGetProgramInfoLog;
-extern PFNGLDELETEPROGRAMPROC            glDeleteProgram;
-extern PFNGLUSEPROGRAMPROC               glUseProgram;
-extern PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer;
-extern PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray;
-extern PFNGLVALIDATEPROGRAMPROC          glValidateProgram;
-extern PFNGLGETUNIFORMLOCATIONPROC       glGetUniformLocation;
-extern PFNGLUNIFORM1IPROC                glUniform1i;
-extern PFNGLACTIVETEXTUREPROC            glActiveTexture_;
-extern PFNGLUNIFORM4FVPROC               glUniform4fv;
+extern PFNGLCREATESHADERPROC glCreateShader;
+extern PFNGLSHADERSOURCEPROC glShaderSource;
+extern PFNGLCOMPILESHADERPROC glCompileShader;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLDELETESHADERPROC glDeleteShader;
+extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLATTACHSHADERPROC glAttachShader;
+extern PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation;
+extern PFNGLLINKPROGRAMPROC glLinkProgram;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
+extern PFNGLUSEPROGRAMPROC glUseProgram;
+extern PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+extern PFNGLVALIDATEPROGRAMPROC glValidateProgram;
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+extern PFNGLUNIFORM1IPROC glUniform1i;
+extern PFNGLACTIVETEXTUREPROC glActiveTexture_;
+extern PFNGLUNIFORM4FVPROC glUniform4fv;
 extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 
-const GLenum      VERTEX_SHADER   = GL_VERTEX_SHADER;
-const GLenum      FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
-const std::string INVERT_TEXTURE  = "Invert texture";
-const std::string FULL_SCREEN     = "Full screen";
-const std::string WINDOW_MODE     = "Window mode";
-const std::string top_view{ "top_view" };
-const std::string front_view{ "front_view" };
+const GLenum VERTEX_SHADER = GL_VERTEX_SHADER;
+const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
+const std::string INVERT_TEXTURE = "Invert texture";
+const std::string FULL_SCREEN = "Full screen";
+const std::string WINDOW_MODE = "Window mode";
+const std::string top_view{"top_view"};
+const std::string front_view{"front_view"};
 
 // rotation direction
 #define CKW -1 // clockwise
@@ -58,14 +58,14 @@ class engine
 {
 public:
     engine();
-    engine(const std::string& in_screen_mode_type, const float& in_width,
-           const float& in_height);
+    engine(const std::string &in_screen_mode_type, const float &in_width,
+           const float &in_height);
 
     bool events();
 
     void swap_buffers();
 
-    void set_view_mode(const std::string& in_mode);
+    void set_view_mode(const std::string &in_mode);
 
     void switch_view_mode();
 
@@ -81,35 +81,35 @@ public:
     bool key_Q_pressed();
     bool key_E_pressed();
 
-    void render(const rectangle& r);
-    void render(const triangle& t);
+    void render(const rectangle &r);
+    void render(const triangle &t);
 
     ~engine();
 
     float get_k_screen() { return k_screen; }
 
     // mooving
-    void move(float speed, rectangle& geometry);
+    void move(float speed, rectangle &geometry);
 
-    void move(const float speed, rectangle& geometry, const direction dir);
+    void move(float speed, rectangle &geometry, direction dir);
 
-    void move_foward(const float speed, rectangle& geometry);
+    void move_foward(float speed, rectangle &geometry);
 
-    void move_backward(const float speed, rectangle& geometry);
+    void move_backward(float speed, rectangle &geometry);
 
-    void rotate(const float value, rectangle& geometry, const int direction);
+    void rotate(float value, rectangle &geometry, int direction);
 
-    void normalize_vector(point& v);
+    void normalize_vector(point &v);
 
     // textures
     GLuint load_image(std::string filename);
-    void   render_textured_rectangle(const rectangle& r, GLint texture_number);
-    void   render(const rectangle& r, GLint texture_number);
+    void render_textured_rectangle(const rectangle &r, GLint texture_number);
+    void render(const rectangle &r, GLint texture_number);
 
 private:
     bool initialize();
-    bool initialize(const std::string& screen_mode_type, const float& in_width,
-                    const float& in_height);
+    bool initialize(const std::string &screen_mode_type, const float &in_width,
+                    const float &in_height);
 
     template <typename T>
     T scale_to_screen(T input)
@@ -123,72 +123,72 @@ private:
         return input;
     }
 
-    void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
+    void trans_matrix(float fdeltaX, float fdeltaY, rectangle &r);
 
-    void move_to_direction(const float speed, rectangle& geometry);
+    void move_to_direction(const float speed, rectangle &geometry);
 
-    void rotate_matrix(float frotate_angle, rectangle& r);
+    void rotate_matrix(float frotate_angle, rectangle &r);
 
     const static std::string system_name;
-    std::shared_ptr<Log>     logger;
-    SDL_Event                test_event;
+    std::shared_ptr<Log> logger;
+    SDL_Event test_event;
 
-    SDL_Window* window = nullptr;
+    SDL_Window *window = nullptr;
 
     //=== screen aspect ratio ===
-    float       width;
-    float       height;
-    float       k_screen; //= height / width;
+    float width;
+    float height;
+    float k_screen; //= height / width;
     std::string screen_mode_type;
 
     //=== sound varibles ===
-    Mix_Music* music;
-    Mix_Chunk* music_chunk;
+    Mix_Music *music;
+    Mix_Chunk *music_chunk;
     // int channel;
 
     //=== keyboard flags===
-    bool key_W_flag{ false };
-    bool key_S_flag{ false };
-    bool key_A_flag{ false };
-    bool key_D_flag{ false };
-    bool key_SPACE_flag{ false };
-    bool key_LCTRL_flag{ false };
-    bool key_ENTER_flag{ false };
-    bool key_Esc_flag{ false };
-    bool key_Q_flag{ false };
-    bool key_E_flag{ false };
+    bool key_W_flag{false};
+    bool key_S_flag{false};
+    bool key_A_flag{false};
+    bool key_D_flag{false};
+    bool key_SPACE_flag{false};
+    bool key_LCTRL_flag{false};
+    bool key_ENTER_flag{false};
+    bool key_Esc_flag{false};
+    bool key_Q_flag{false};
+    bool key_E_flag{false};
 
     //=== openGL ===
-    GLuint program{ 0 };
-    int    location{ 0 };
+    GLuint program{0};
+    int location{0};
 
     template <typename T>
-    void load_gl_func(const char* func_name, T& result);
+    void load_gl_func(const char *func_name, T &result);
 
     void old_create_shader();
 
-    void render_triangle(const triangle& t);
-    void render_rectangle(const rectangle& r);
+    void render_triangle(const triangle &t);
+    void render_rectangle(const rectangle &r);
 
     //=== mouse ===
-    bool  key_MOUSE_flag{ false };
-    bool  mouse_click{ false };
-    float mouse_x_pos{ 0.f };
-    float mouse_y_pos{ 0.f };
+    bool key_MOUSE_flag{false};
+    bool mouse_click{false};
+    float mouse_x_pos{0.f};
+    float mouse_y_pos{0.f};
 
-    std::string resources{ "res/" };
+    std::string resources{"res/"};
 
     //=== textures ===
-    GLuint texture_id{ 0 };
+    GLuint texture_id{0};
 
     rectangle invert_texture_by_x(rectangle r); // lvi delete
     rectangle invert_texture_by_y(rectangle r); // lvi delete
-    void      texture_look_left(rectangle& r);
-    void      texture_look_right(rectangle& r);
-    void      texture_look_down(rectangle& r);
-    void      texture_look_up(rectangle& r);
-    void      texture_look_right_rotate(rectangle& r);
-    void      texture_look_left_rotate(rectangle& r);
+    void texture_look_left(rectangle &r);
+    void texture_look_right(rectangle &r);
+    void texture_look_down(rectangle &r);
+    void texture_look_up(rectangle &r);
+    void texture_look_right_rotate(rectangle &r);
+    void texture_look_left_rotate(rectangle &r);
 
     std::string view_mode; // top or front => for choosing changing textures
                            // coordinates bihavior

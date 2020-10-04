@@ -91,3 +91,45 @@ private:
     static long long int global_personID_counter;
     long long int personID;
 };
+
+class rot_object : public game_object
+{
+public:
+    rot_object();
+
+    void set_geometry(float center_x, float center_y, float width_x,
+                      float height_y);
+
+    rectangle &get_geometry();
+
+    rectangle get_geometry_copy();
+
+    void set_health(float value);
+    void make_damage(float value);
+    float get_health();
+
+    void set_speed(float in_speed);
+    float get_speed();
+
+    void set_scale(float in_scale);
+    float get_scale();
+
+    void set_render_marker(bool value);
+    bool get_render_marker();
+
+    virtual ~rot_object() { logger << "person with ID = " << std::to_string(personID) << " destructed" << INFO; }
+
+private:
+    rectangle person_geometry;
+
+    float rotation_speed;
+
+    float scale{1.f};
+    bool render_this{true};
+
+    const static std::string system_name;
+    std::shared_ptr<Log> logger;
+
+    static long long int global_personID_counter;
+    long long int personID;
+};
