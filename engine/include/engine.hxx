@@ -106,6 +106,82 @@ public:
     void render_textured_rectangle(const rectangle &r, GLint texture_number);
     void render(const rectangle &r, GLint texture_number);
 
+    void scale_triangle(float fscale_valueX, float fscale_valueY, triangle &t)
+    {
+
+        float x0 = t.v[0].x;
+        float y0 = t.v[0].y;
+
+        float x1 = t.v[1].x;
+        float y1 = t.v[1].y;
+
+        float x2 = t.v[2].x;
+        float y2 = t.v[2].y;
+
+        t.v[0].x = (fscale_valueX * x0 + 0 * y0 + 0 * 1);
+        t.v[0].y = (0 * x0 + fscale_valueY * y0 + 0 * 1);
+
+        t.v[1].x = (fscale_valueX * x1 + 0 * y1 + 0 * 1);
+        t.v[1].y = (0 * x1 + fscale_valueY * y1 + 0 * 1);
+
+        t.v[2].x = (fscale_valueX * x2 + 0 * y2 + 0 * 1);
+        t.v[2].y = (0 * x2 + fscale_valueY * y2 + 0 * 1);
+    }
+
+    void scale_rectangle(float fscale_valueX, float fscale_valueY, rectangle &r)
+    {
+        float x0 = r.v[0].x;
+        float y0 = r.v[0].y;
+
+        float x1 = r.v[1].x;
+        float y1 = r.v[1].y;
+
+        float x2 = r.v[2].x;
+        float y2 = r.v[2].y;
+
+        float x3 = r.v[3].x;
+        float y3 = r.v[3].y;
+
+        r.v[0].x = (fscale_valueX * x0 + 0 * y0 + 0 * 1);
+        r.v[0].y = (0 * x0 + fscale_valueY * y0 + 0 * 1);
+
+        r.v[1].x = (fscale_valueX * x1 + 0 * y1 + 0 * 1);
+        r.v[1].y = (0 * x1 + fscale_valueY * y1 + 0 * 1);
+
+        r.v[2].x = (fscale_valueX * x2 + 0 * y2 + 0 * 1);
+        r.v[2].y = (0 * x2 + fscale_valueY * y2 + 0 * 1);
+
+        r.v[3].x = (fscale_valueX * x3 + 0 * y3 + 0 * 1);
+        r.v[3].y = (0 * x3 + fscale_valueY * y3 + 0 * 1);
+    }
+
+    void scale_rectangle(float fscale_value, rectangle &r)
+    {
+        float x0 = r.v[0].x;
+        float y0 = r.v[0].y;
+
+        float x1 = r.v[1].x;
+        float y1 = r.v[1].y;
+
+        float x2 = r.v[2].x;
+        float y2 = r.v[2].y;
+
+        float x3 = r.v[3].x;
+        float y3 = r.v[3].y;
+
+        r.v[0].x = (fscale_value * x0);
+        r.v[0].y = (fscale_value * y0);
+
+        r.v[1].x = (fscale_value * x1);
+        r.v[1].y = (fscale_value * y1);
+
+        r.v[2].x = (fscale_value * x2);
+        r.v[2].y = (fscale_value * y2);
+
+        r.v[3].x = (fscale_value * x3);
+        r.v[3].y = (fscale_value * y3);
+    }
+
 private:
     bool initialize();
     bool initialize(const std::string &screen_mode_type, const float &in_width,

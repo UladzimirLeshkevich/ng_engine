@@ -101,28 +101,25 @@ public:
                       float height_y);
 
     rectangle &get_geometry();
-
     rectangle get_geometry_copy();
 
-    void set_health(float value);
-    void make_damage(float value);
-    float get_health();
+    void set_rotatinon_paremetres(float in_speed, int direction);
 
-    void set_speed(float in_speed);
     float get_speed();
+    float get_calculaterd_speed();
 
-    void set_scale(float in_scale);
-    float get_scale();
+    int get_direction();
 
-    void set_render_marker(bool value);
-    bool get_render_marker();
+    void set_texture(unsigned int texture_id);
+    unsigned int get_texture() { return person_texture_id; }
 
     virtual ~rot_object() { logger << "person with ID = " << std::to_string(personID) << " destructed" << INFO; }
 
 private:
     rectangle person_geometry;
 
-    float rotation_speed;
+    float m_rotation_speed;
+    int m_direction; // 1 or -1
 
     float scale{1.f};
     bool render_this{true};
@@ -132,4 +129,8 @@ private:
 
     static long long int global_personID_counter;
     long long int personID;
+
+    // textures
+    unsigned int person_texture_id;
+    //std::vector<unsigned int> person_sprite;
 };
