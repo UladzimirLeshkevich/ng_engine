@@ -402,6 +402,18 @@ void engine::rotate(float value, rectangle &geometry, int direction)
 }
 
 //====================================================================================
+void engine::rotate_with_current_speed(float value, rectangle &geometry, int direction)
+{
+    // calculating distand to the centre and move to the centre and back
+    float const tmp_dist_x_to_centre = 0.0f - geometry.v[5].x;
+    float const tmp_dist_y_to_centre = 0.0f - geometry.v[5].y;
+
+    trans_matrix(tmp_dist_x_to_centre, tmp_dist_y_to_centre, geometry);
+    rotate_matrix((value * 6.f * (1.f / m_fps) * direction), geometry);
+    trans_matrix(-tmp_dist_x_to_centre, -tmp_dist_y_to_centre, geometry);
+}
+
+//====================================================================================
 void engine::normalize_vector(point &v)
 {
     point tmp;

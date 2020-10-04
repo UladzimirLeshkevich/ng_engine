@@ -99,6 +99,8 @@ public:
 
     void rotate(float value, rectangle &geometry, int direction);
 
+    void rotate_with_current_speed(float value, rectangle &geometry, int direction); // rotate per minute
+
     void normalize_vector(point &v);
 
     // textures
@@ -268,4 +270,6 @@ private:
 
     std::string view_mode; // top or front => for choosing changing textures
                            // coordinates bihavior
+
+    float m_fps{60};
 };

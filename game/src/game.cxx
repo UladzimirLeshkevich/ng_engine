@@ -74,7 +74,8 @@ int main(int /*argc*/, char * /*argv*/[])
         std::cout << std::ctime(&timeStamp) << std::endl;
 
         //============ KEYS and ACTIONS ====================
-        ge.rotate(p.get_calculaterd_speed(), p.get_geometry(), p.get_direction());
+        //ge.rotate(p.get_calculaterd_speed(), p.get_geometry(), p.get_direction());
+        ge.rotate_with_current_speed(p.get_speed(), p.get_geometry(), p.get_direction());
 
         //=== render ===
         ge.render(p.get_geometry(), p.get_texture());
