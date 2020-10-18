@@ -12,6 +12,7 @@ add_library(${PROJECT_NAME} SHARED include/engine.hxx
                                    include/game_object.hxx
                                    src/game_object.cxx
                                    ../common/geometry.hxx
+                                   ../common/geometry.cxx
                                    )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

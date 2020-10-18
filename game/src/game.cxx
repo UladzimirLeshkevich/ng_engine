@@ -45,6 +45,21 @@ int main(int /*argc*/, char * /*argv*/[])
     timer frame_timer;         //
     frame_timer.start_timer(); //
 
+    // angle between vectors test
+    vector v1, v2;
+
+    v1.x = -4;
+    v1.y = 2;
+
+    v2.x = 2;
+    v2.y = 3;
+
+    float angle_r = calculate_angle_radian(v1, v2);
+    std::cout << "angle_r = " << angle_r << std::endl;
+
+    float angle_d = calculate_angle_degree(v1, v2);
+    std::cout << "angle_d = " << angle_d << std::endl;
+
     while (loop)
     {
         loop = ge.events();
