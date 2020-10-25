@@ -53,6 +53,44 @@ void person::set_geometry(float center_x, float center_y, float width_x,
 }
 
 //==========================================================================
+void person::set_world_geometry(float center_x, float center_y, float width_x,
+                                float height_y)
+{
+    person_geometry.v[0].x = center_x - (width_x / 2);
+    person_geometry.v[0].y = center_y - (height_y / 2);
+
+    person_geometry.v[1].x = center_x - (width_x / 2);
+    person_geometry.v[1].y = center_y + (height_y / 2);
+
+    person_geometry.v[2].x = center_x + (width_x / 2);
+    person_geometry.v[2].y = center_y - (height_y / 2);
+
+    person_geometry.v[3].x = center_x + (width_x / 2);
+    person_geometry.v[3].y = center_y + (height_y / 2);
+
+    // direction ??
+    person_geometry.v[4].x = center_x;
+    person_geometry.v[4].y = center_y - height_y / 2;
+
+    // center
+    person_geometry.v[5].x = center_x;
+    person_geometry.v[5].y = center_y;
+
+    // textures
+    person_geometry.v[0].tx = 0.f;
+    person_geometry.v[0].ty = 0.f;
+
+    person_geometry.v[1].tx = 0.f;
+    person_geometry.v[1].ty = 1.f;
+
+    person_geometry.v[2].tx = 1.f;
+    person_geometry.v[2].ty = 0.f;
+
+    person_geometry.v[3].tx = 1.f;
+    person_geometry.v[3].ty = 1.f;
+}
+
+//==========================================================================
 void person::set_health(float value)
 {
     health = value;

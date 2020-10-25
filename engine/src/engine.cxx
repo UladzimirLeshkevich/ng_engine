@@ -55,7 +55,11 @@ engine::engine(const std::string &in_screen_mode_type, const float &in_width,
 //==========================================================================
 void engine::render(const rectangle &r)
 {
-    render_rectangle(scale_to_screen(r));
+    rectangle in_opengl = world_coord_to_opengl(r);
+    //logger << "void engine::render(const rectangle &r)" << DEBUG; // lvi debug
+    //render_rectangle(scale_to_screen(r));
+    //render_rectangle(scale_to_screen(in_opengl));
+    render_rectangle(in_opengl);
 }
 
 //==========================================================================
@@ -67,7 +71,12 @@ void engine::render(const triangle &t)
 //==========================================================================
 void engine::render(const rectangle &r, GLint texture_number)
 {
-    render_textured_rectangle(scale_to_screen(r), texture_number);
+    rectangle in_opengl = world_coord_to_opengl(r);
+    render_textured_rectangle(in_opengl, texture_number);
+
+    //render_textured_rectangle(scale_to_screen(in_opengl), texture_number);
+
+    //render_textured_rectangle(scale_to_screen(r), texture_number);
 }
 
 //==========================================================================

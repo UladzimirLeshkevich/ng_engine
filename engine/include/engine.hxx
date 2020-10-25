@@ -236,6 +236,38 @@ private:
     bool key_Q_flag{false};
     bool key_E_flag{false};
 
+    //=== Transform coordinates ===
+    rectangle world_coord_to_opengl(const rectangle &r)
+    {
+        rectangle result = r;
+
+        // world to camera
+        result.v[0].x = result.v[0].x - camera_x_centre;
+        result.v[1].x = result.v[1].x - camera_x_centre;
+        result.v[2].x = result.v[2].x - camera_x_centre;
+        result.v[3].x = result.v[3].x - camera_x_centre;
+
+        result.v[0].y = camera_x_centre - result.v[0].y;
+        result.v[1].y = camera_x_centre - result.v[1].y;
+        result.v[2].y = camera_x_centre - result.v[2].y;
+        result.v[3].y = camera_x_centre - result.v[3].y;
+
+        // camera to opengl
+        result.v[0].x = result.v[0].x * 2 / width;
+        result.v[1].x = result.v[1].x * 2 / width;
+        result.v[2].x = result.v[2].x * 2 / width;
+        result.v[3].x = result.v[3].x * 2 / width;
+
+        result.v[0].y = result.v[0].y * 2 / height;
+        result.v[2].y = result.v[2].y * 2 / height;
+        result.v[1].y = result.v[1].y * 2 / height;
+        result.v[3].y = result.v[3].y * 2 / height;
+
+        std::cerr << "result = " << result.v[0].x << " " << result.v[0].y << "\n!!";
+
+        return result;
+    }
+
     //=== openGL ===
     GLuint program{0};
     int location{0};
@@ -272,4 +304,11 @@ private:
                            // coordinates bihavior
 
     float m_fps{60};
+
+    // world to opengl
+    float world_height = 3000.f;
+    float world_width = 3000.f;
+
+    float camera_x_centre = 1500.f;
+    float camera_y_centre = 1500.f;
 };

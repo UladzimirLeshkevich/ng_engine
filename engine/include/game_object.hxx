@@ -28,6 +28,9 @@ public:
     void set_geometry(float center_x, float center_y, float width_x,
                       float height_y);
 
+    void set_world_geometry(float center_x, float center_y, float width_x,
+                            float height_y);
+
     rectangle &get_geometry();
 
     rectangle get_geometry_copy();
